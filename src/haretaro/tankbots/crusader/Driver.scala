@@ -1,9 +1,11 @@
-package haretaro.tankbots.commons
+package haretaro.tankbots.crusader
 
 import robocode._
 import robocode.util.Utils
 import java.awt.Color
 import haretaro.tankbots.math.Vector2
+import haretaro.tankbots.commons.EnemyInfoManager
+import haretaro.tankbots.commons.GraphicalDebugger
 
 /**
  * @author Haretaro
