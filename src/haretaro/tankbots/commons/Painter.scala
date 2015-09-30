@@ -13,7 +13,7 @@ trait Painter extends Robot{
   val stealthColor = new Color(70,77,108)
   
   /** 床と同じ色に塗装する*/
-  def paintStealth() = setAllColors(stealthColor)
+  def paintStealth = setAllColors(stealthColor)
   
   /** タンカラー*/
   val tanColor = new Color(166,123,91)
