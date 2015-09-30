@@ -4,10 +4,6 @@ import robocode._
 import haretaro.tankbots.commons._
 import java.awt.Color
 import haretaro.tankbots.math.Vector2
-import haretaro.tankbots.crusader.Radarman
-import haretaro.tankbots.crusader.Gunner
-import haretaro.tankbots.crusader.Painter
-import haretaro.tankbots.crusader.Driver
 
 /**
  * @author Haretaro
