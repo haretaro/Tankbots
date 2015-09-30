@@ -22,17 +22,6 @@ trait Gunner extends AdvancedRobot with EnemyInfoManager{
   def targetAt(x:Double, y:Double):Unit = targetAt(Vector2(x,y))
   
   /** 線形予測射撃を行う */
-  def linerPrediction(target:Enemy) = {
-    val power = 2.0
-    def predictionOfHit = {
-      var bulletPosition = Vector2(getX,getY)
-      val bulletVelocity = Vector2.fromTheta(getGunHeadingRadians,20-3*power)
-      var enemyPosition = target.position
-      
-      for(i <- 1 to 20){
-        bulletPosition += bulletVelocity
-        enemyPosition += target.velocity
-      }
-    }
-  }
+  def linerPrediction(target:Enemy, power:Double) = 
+    targetAt(target.position + target.velocity * (target.position - Vector2(getX,getY)).magnitude / (20 - 3 * power))
 }
