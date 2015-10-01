@@ -2,9 +2,8 @@ package haretaro.tankbots.crusader
 
 import robocode._
 import robocode.util.Utils
-import haretaro.tankbots.math.Vector2
-import haretaro.tankbots.commons.Enemy
-import haretaro.tankbots.commons.EnemyInfoManager
+import haretaro.tankbots.math._
+import haretaro.tankbots.commons._
 
 /**
  * @author Haretaro

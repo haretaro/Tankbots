@@ -3,7 +3,7 @@ package haretaro.tankbots.crusader
 import robocode._
 import haretaro.tankbots.commons._
 import java.awt.Color
-import haretaro.tankbots.math.Vector2
+import haretaro.tankbots.math._
 
 /**
  * @author Haretaro
@@ -28,7 +28,7 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
       updateEnemyInfo
       radar
       if(getTime % 5 == 0 ) nearestEnemy.map(e => linerPrediction(e,2))
-      reservedFire()
+      reservedFire
       gravityDrive
       execute
     }

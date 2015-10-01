@@ -3,9 +3,8 @@ package haretaro.tankbots.crusader
 import robocode._
 import robocode.util.Utils
 import java.awt.Color
-import haretaro.tankbots.math.Vector2
-import haretaro.tankbots.commons.EnemyInfoManager
-import haretaro.tankbots.commons.GraphicalDebugger
+import haretaro.tankbots.math._
+import haretaro.tankbots.commons._
 
 /**
  * @author Haretaro
@@ -16,6 +15,7 @@ trait Driver extends AdvancedRobot with EnemyInfoManager with GraphicalDebugger{
   /** 重力のデバッグ描画用 (始点,終点) */
   private var gravity = (Vector2(0,0),Vector2(0,0))
   
+  /** イベントハンドラーを登録する */
   def initDriver = addOnPaintEventHandler(g => drawLine(g,Color.green,gravity._1,gravity._2))
   
   /** 重力移動 */
