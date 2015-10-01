@@ -13,13 +13,13 @@ import haretaro.tankbots.commons.GraphicalDebugger
  */
 trait Driver extends AdvancedRobot with EnemyInfoManager with GraphicalDebugger{
   
-  private var gravity = (Color.green,Vector2(0,0),Vector2(0,0))
+  /** 重力のデバッグ描画用 (始点,終点) */
+  private var gravity = (Vector2(0,0),Vector2(0,0))
   
-  def initDriver = {
-    delegates = delegates :+ (() => lines = lines :+ gravity)
-  }
+  def initDriver = addOnPaintEventHandler(g => drawLine(g,Color.green,gravity._1,gravity._2))
   
-  def gravityMove = {
+  /** 重力移動 */
+  def gravityDrive = {
     val position = Vector2(getX,getY)
     val center = Vector2(getBattleFieldWidth/2,getBattleFieldHeight/2)
     val enemyVectors = enemies.map(position - _.linerPrediction(1))//敵との相対ベクトルをそれぞれ求める
@@ -44,7 +44,7 @@ trait Driver extends AdvancedRobot with EnemyInfoManager with GraphicalDebugger{
     setAhead(1000)
     println(gravity)
     println(gravity.magnitude)
-    this.gravity = (Color.green, position, gravity + position)
+    this.gravity = (position, gravity + position)
   }
   
   /**
