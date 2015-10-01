@@ -22,15 +22,16 @@ trait Driver extends AdvancedRobot with EnemyInfoManager with GraphicalDebugger{
   def gravityDrive = {
     val position = Vector2(getX,getY)
     val center = Vector2(getBattleFieldWidth/2,getBattleFieldHeight/2)
-    val enemyVectors = enemies.map(position - _.linerPrediction(1))//敵との相対ベクトルをそれぞれ求める
-      .map(r => r * 10000/math.pow(r.magnitude,2))//距離に反比例した大きさにする
+    val enemyVectors = enemies
+      .map(position - _.linerPrediction(1))//敵との相対ベクトルをそれぞれ求めて
+      .map(r => r * 10000/math.pow(r.magnitude,2))//距離の２乗に反比例した大きさにする
     val enemyVector = enemyVectors match{
-      case Nil => (center - position)
+      case Nil => (center - position) / 100 //敵の座標がわからなくてベクトルが定まらない場合はマップの中心に向かう
       case v => v.reduceLeft(_+_)
     }
     
     val wallVector = (center - position) * (center - position).magnitude /300
-    val gravity = enemyVector + wallVector
+    val gravity = enemyVector + wallVector //中心に向かうベクトルを加算して壁にぶつからないようにする
     
     val angle = Utils.normalRelativeAngle(gravity.angle - getHeadingRadians)
     
@@ -42,8 +43,6 @@ trait Driver extends AdvancedRobot with EnemyInfoManager with GraphicalDebugger{
     setTurnRightRadians(angle)
     setMaxVelocity(speed)
     setAhead(1000)
-    println(gravity)
-    println(gravity.magnitude)
     this.gravity = (position, gravity + position)
   }
   

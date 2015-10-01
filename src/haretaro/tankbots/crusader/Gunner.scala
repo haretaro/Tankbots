@@ -20,7 +20,7 @@ trait Gunner extends AdvancedRobot with EnemyInfoManager{
    * 指定した場所に砲を向ける
    * @param point 位置ベクトル
    */
-  def targetAt(point:Vector2):Unit = {
+  def targetAt(point:Vector2) = {
     val direction = point - Vector2(getX,getY)
     setTurnGunRightRadians(Utils.normalRelativeAngle(direction.angle - getGunHeadingRadians))
   }

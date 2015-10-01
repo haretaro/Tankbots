@@ -17,11 +17,11 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
     
     addOnPaintEventHandler(g =>{
       enemies.map(e => drawLine(g, Color.red, e.position, e.position+e.velocity*10))
-      enemies.map(e => drawRect(g, Color.red, e.position - Vector2(16,16), 32.0, 32.0))
+      enemies.map(e => drawRect(g, Color.red, e.position - Vector2(16,16), 32, 32))
     })
     
     paintTan
-    //paintStealth
+    if(getRoundNum == 3) paintStealth
     setAdjustGunForRobotTurn(true)
     
     while(true){
