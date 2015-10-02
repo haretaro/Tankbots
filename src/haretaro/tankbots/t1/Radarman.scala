@@ -1,4 +1,4 @@
-package haretaro.tankbots.crusader
+package haretaro.tankbots.t1
 
 import robocode._
 import robocode.util.Utils

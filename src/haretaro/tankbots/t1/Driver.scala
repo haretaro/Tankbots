@@ -1,4 +1,4 @@
-package haretaro.tankbots.crusader
+package haretaro.tankbots.t1
 
 import robocode._
 import robocode.util.Utils
@@ -23,7 +23,7 @@ trait Driver extends AdvancedRobot with EnemyInfoManager with GraphicalDebugger{
     val position = Vector2(getX,getY)
     val center = Vector2(getBattleFieldWidth/2,getBattleFieldHeight/2)
     val enemyVectors = enemies
-      .map(position - _.linerPrediction(1))//敵との相対ベクトルをそれぞれ求めて
+      .map(position - _.linerPrediction(getTime,1))//敵との相対ベクトルをそれぞれ求めて
       .map(r => r * 10000/math.pow(r.magnitude,2))//距離の２乗に反比例した大きさにする
     val enemyVector = enemyVectors match{
       case Nil => (center - position) / 100 //敵の座標がわからなくてベクトルが定まらない場合はマップの中心に向かう

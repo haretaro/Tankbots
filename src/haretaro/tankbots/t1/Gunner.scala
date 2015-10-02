@@ -1,4 +1,4 @@
-package haretaro.tankbots.crusader
+package haretaro.tankbots.t1
 
 import robocode._
 import robocode.util.Utils
@@ -27,10 +27,11 @@ trait Gunner extends AdvancedRobot with EnemyInfoManager{
   
   def targetAt(x:Double, y:Double):Unit = targetAt(Vector2(x,y))
   
-  /** 線形予測射撃を行う */
-  def linerPrediction(target:Enemy, power:Double) = {
-    targetAt(target.position + target.velocity * (target.position - Vector2(getX,getY)).magnitude / (20 - 3 * power))
-    fireTime = getTime + 1
-    this.power = power
+  /** ラフな線形予測射撃を行う */
+  def roughLinerPrediction(target:Enemy, power:Double) = {
+    println(getTime - target.timeLastUpdated)
+     targetAt(target.position + target.velocity * (target.position - Vector2(getX,getY)).magnitude / (20 - 3 * power))
+     fireTime = getTime + 1
+     this.power = power
   }
 }

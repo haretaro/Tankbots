@@ -10,7 +10,7 @@ case class Enemy(val name:String, var position:Vector2, var velocity:Vector2, va
   
   var timeLastUpdated:Long = 0
   
-  /** @return 速度ベクトルが一定の場合のt時間後の未来位置 */
-  def linerPrediction(t:Int) = position + velocity * t
+  /** @return 速度ベクトルが一定の場合の現在時刻からt時間後の未来位置 */
+  def linerPrediction(now:Long, t:Int) = position + velocity * (now -timeLastUpdated + t)
   
 }

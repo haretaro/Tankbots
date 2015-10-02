@@ -1,4 +1,4 @@
-package haretaro.tankbots.crusader
+package haretaro.tankbots.commons
 
 import robocode._
 import java.awt.Color
@@ -8,22 +8,22 @@ import java.awt.Color
  * 塗装職人
  * ロボットを塗装するメソッドを実装する
  */
-trait Painter extends Robot{
+object Painter{
   /** 床と同じ色*/
   val stealthColor = new Color(70,77,108)
   
   /** 床と同じ色に塗装する*/
-  def paintStealth = setAllColors(stealthColor)
+  def paintStealth(r:Robot) = r.setAllColors(stealthColor)
   
   /** タンカラー*/
   val tanColor = new Color(166,123,91)
   
   /** タンカラーに塗装する*/
-  def paintTan = {
-    setBodyColor(tanColor);
-    setGunColor(tanColor);
-    setRadarColor(tanColor);
-    setScanColor(Color.orange);
-    setBulletColor(Color.orange);
+  def paintTan(r:Robot) = {
+    r.setBodyColor(tanColor);
+    r.setGunColor(tanColor);
+    r.setRadarColor(tanColor);
+    r.setScanColor(Color.orange);
+    r.setBulletColor(Color.orange);
   }
 }
