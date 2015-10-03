@@ -29,7 +29,6 @@ trait Gunner extends AdvancedRobot with EnemyInfoManager{
   
   /** ラフな線形予測射撃を行う */
   def roughLinerPrediction(target:Enemy, power:Double) = {
-    println(getTime - target.timeLastUpdated)
      targetAt(target.position + target.velocity * (target.position - Vector2(getX,getY)).magnitude / (20 - 3 * power))
      fireTime = getTime + 1
      this.power = power

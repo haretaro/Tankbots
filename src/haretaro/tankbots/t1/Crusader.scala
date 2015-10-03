@@ -37,7 +37,10 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
   /** 勝利のダンスを踊る */
   override def onWin(e:WinEvent) = {
     setBulletColor(Color.red)
+    val chameleon = Chameleon(this)
+    
     while(true){
+      chameleon.update
       setFire(3)
       setAhead(0)
       setTurnRadarRight(360)
