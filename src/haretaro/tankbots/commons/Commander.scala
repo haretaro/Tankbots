@@ -6,10 +6,11 @@ import haretaro.tankbots.math.Vector2
 /**
  * @author Haretaro
  */
-trait EnemyInfoManager extends AdvancedRobot{
+trait Commander extends AdvancedRobot{
   
   protected var enemies = List[Enemy]()
 
+  /** レーダーがスキャンしたロボットをリストに追加する */
   override def onScannedRobot(e:ScannedRobotEvent) = {
     
     //敵の座標の相対ベクトル

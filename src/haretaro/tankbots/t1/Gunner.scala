@@ -9,7 +9,7 @@ import haretaro.tankbots.commons._
  * @author Haretaro
  * 砲手
  */
-trait Gunner extends AdvancedRobot with EnemyInfoManager{
+trait Gunner extends AdvancedRobot with Commander{
   
   private var fireTime:Long = 0
   private var power:Double = 2

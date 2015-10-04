@@ -9,7 +9,7 @@ import haretaro.tankbots.commons._
  * @author Haretaro
  * レーダー手
  */
-trait Radarman extends AdvancedRobot with EnemyInfoManager{
+trait Radarman extends AdvancedRobot with Commander{
   
   /** 指定した場所の辺りを見る */
   def lookAt(point:Vector2) = {

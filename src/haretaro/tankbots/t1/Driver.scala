@@ -10,7 +10,7 @@ import haretaro.tankbots.commons._
  * @author Haretaro
  * 運転手
  */
-trait Driver extends AdvancedRobot with EnemyInfoManager with GraphicalDebugger{
+trait Driver extends AdvancedRobot with Commander with GraphicalDebugger{
   
   /** 重力のデバッグ描画用 (始点,終点) */
   private var gravity = (Vector2(0,0),Vector2(0,0))
