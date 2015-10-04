@@ -8,7 +8,7 @@ import haretaro.tankbots.math.Vector2
  */
 trait Commander extends AdvancedRobot{
   
-  protected var enemies = List[Enemy]()
+  protected var enemies = Set[Enemy]()
 
   /** レーダーがスキャンしたロボットをリストに追加する */
   override def onScannedRobot(e:ScannedRobotEvent) = {
@@ -29,7 +29,7 @@ trait Commander extends AdvancedRobot{
       }
       case None => {
         val enemy = Enemy(e.getName,position,velocity,e.getEnergy)
-        enemies = enemies :+ enemy
+        enemies = enemies + enemy
         enemy
       }
     }
@@ -43,7 +43,7 @@ trait Commander extends AdvancedRobot{
   
   /** @return 最も近い敵 */
   def nearestEnemy = enemies match{
-    case Nil => None
+    case e if e.isEmpty => None
     case _ => Option(enemies.minBy(e=>(e.position - Vector2(getX,getY)).magnitude))
   }
   

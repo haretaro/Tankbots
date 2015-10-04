@@ -26,7 +26,7 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger{
       .map(position - _.linerPrediction(getTime,1))//敵との相対ベクトルをそれぞれ求めて
       .map(r => r * 10000/math.pow(r.magnitude,2))//距離の２乗に反比例した大きさにする
     val enemyVector = enemyVectors match{
-      case Nil => (center - position) / 100 //敵の座標がわからなくてベクトルが定まらない場合はマップの中心に向かう
+      case v if v.isEmpty => (center - position) / 100 //敵の座標がわからなくてベクトルが定まらない場合はマップの中心に向かう
       case v => v.reduceLeft(_+_)
     }
     
