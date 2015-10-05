@@ -1,8 +1,8 @@
 package haretaro.tankbots.t1
 
+import haretaro.tankbots.commons.Enemy
 import haretaro.tankbots.math.Vector2
 import robocode._
-import haretaro.tankbots.commons.Enemy
 
 /**
  * @author Haretaro

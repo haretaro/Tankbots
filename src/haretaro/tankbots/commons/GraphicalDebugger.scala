@@ -1,9 +1,9 @@
 package haretaro.tankbots.commons
 
-import robocode._
-import java.awt.Graphics2D
-import java.awt.Color
+import java.awt.{Color, Graphics2D}
+
 import haretaro.tankbots.math.Vector2
+import robocode.Robot
 
 /**
  * @author Haretaro

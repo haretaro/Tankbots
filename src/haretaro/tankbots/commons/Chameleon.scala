@@ -1,7 +1,8 @@
 package haretaro.tankbots.commons
 
-import robocode._
 import java.awt.Color
+
+import robocode.Robot
 
 /**
  * @author Haretaro

@@ -1,10 +1,10 @@
 package haretaro.tankbots.t1
 
-
-import haretaro.tankbots.commons._
-import haretaro.tankbots.math._
 import java.awt.Color
-import robocode._
+
+import haretaro.tankbots.commons.GraphicalDebugger
+import haretaro.tankbots.math.Vector2
+import robocode.AdvancedRobot
 import robocode.util.Utils
 
 /**

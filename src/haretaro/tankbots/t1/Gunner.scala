@@ -1,9 +1,9 @@
 package haretaro.tankbots.t1
 
-import robocode._
+import haretaro.tankbots.commons.Enemy
+import haretaro.tankbots.math.Vector2
+import robocode.AdvancedRobot
 import robocode.util.Utils
-import haretaro.tankbots.math._
-import haretaro.tankbots.commons._
 
 /**
  * @author Haretaro
