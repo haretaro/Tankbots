@@ -28,8 +28,7 @@ case class Chameleon(val robot:Robot) {
    *  @return 0 to 255
    */
   def red(hue:Int) = {
-    val h = hue%360
-    val r = h match {
+    val r = hue%360 match {
       case h if 0 <= h && h < 60 => 1
       case h if 60 <= h && h < 120 => -2.0 * h / 120 + 2
       case h if 120 <= h && h < 240 => 0
