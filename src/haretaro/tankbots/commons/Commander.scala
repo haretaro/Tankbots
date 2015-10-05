@@ -15,7 +15,7 @@ trait Commander extends AdvancedRobot{
    */
   override def onScannedRobot(e:ScannedRobotEvent) = {
     
-    //敵の座標の相対ベクトル
+    //敵の座標の相対位置ベクトル
     val relativePosition = Vector2.fromTheta(e.getDistance, e.getBearingRadians + getHeadingRadians)
     //敵の位置ベクトル
     val position = relativePosition + Vector2(getX,getY)
