@@ -1,7 +1,7 @@
 package haretaro.tankbots.commons
 
-import robocode._
 import haretaro.tankbots.math.Vector2
+import robocode._
 
 /**
  * @author Haretaro

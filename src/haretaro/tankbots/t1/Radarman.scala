@@ -1,9 +1,10 @@
 package haretaro.tankbots.t1
 
+
+import haretaro.tankbots.commons._
+import haretaro.tankbots.math._
 import robocode._
 import robocode.util.Utils
-import haretaro.tankbots.math._
-import haretaro.tankbots.commons._
 
 /**
  * @author Haretaro

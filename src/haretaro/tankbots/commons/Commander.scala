@@ -1,7 +1,7 @@
 package haretaro.tankbots.commons
 
-import robocode._
 import haretaro.tankbots.math.Vector2
+import robocode._
 
 /**
  * @author Haretaro
@@ -10,7 +10,9 @@ trait Commander extends AdvancedRobot{
   
   protected var enemies = Set[Enemy]()
 
-  /** レーダーがスキャンしたロボットをリストに追加する */
+  /**
+   * レーダーがスキャンしたロボットをリストに追加する
+   */
   override def onScannedRobot(e:ScannedRobotEvent) = {
     
     //敵の座標の相対ベクトル
@@ -36,12 +38,16 @@ trait Commander extends AdvancedRobot{
     enemy.timeLastUpdated = e.getTime
   }
   
-  /** 数ターン以上レーダーが捉えてない敵をリストから消去する*/
+  /**
+   * 数ターン以上レーダーが捉えてない敵をリストから消去する
+   */
   def updateEnemyInfo = {
     enemies = enemies.filter(e=>getTime - e.timeLastUpdated < 20)
   }
   
-  /** @return 最も近い敵 */
+  /**
+   * @return 最も近い敵
+   */
   def nearestEnemy = enemies match{
     case e if e.isEmpty => None
     case _ => Option(enemies.minBy(e=>(e.position - Vector2(getX,getY)).magnitude))
