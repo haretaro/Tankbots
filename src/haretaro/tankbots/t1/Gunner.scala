@@ -4,7 +4,6 @@ import robocode._
 import robocode.util.Utils
 import haretaro.tankbots.math._
 import haretaro.tankbots.commons._
-import haretaro.tankbots.t1.Commander
 
 /**
  * @author Haretaro

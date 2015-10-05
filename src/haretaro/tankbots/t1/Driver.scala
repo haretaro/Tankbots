@@ -6,7 +6,6 @@ import haretaro.tankbots.math._
 import java.awt.Color
 import robocode._
 import robocode.util.Utils
-import haretaro.tankbots.t1.Commander
 
 /**
  * @author Haretaro
