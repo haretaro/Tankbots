@@ -1,9 +1,9 @@
 package haretaro.tankbots.t1
 
 import java.awt.Color
-
 import haretaro.tankbots.commons._
 import haretaro.tankbots.math.Vector2
+import haretaro.tankbots.visual.{Chameleon, Painter}
 import robocode._
 
 /**

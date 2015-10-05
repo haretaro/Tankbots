@@ -1,7 +1,6 @@
-package haretaro.tankbots.commons
+package haretaro.tankbots.visual
 
 import java.awt.Color
-
 import robocode.Robot
 
 /**
