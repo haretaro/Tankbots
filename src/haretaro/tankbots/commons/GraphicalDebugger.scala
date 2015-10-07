@@ -32,6 +32,13 @@ trait GraphicalDebugger extends Robot{
     g.drawRect(position.x,position.y,width,height)
   }
   
+  def drawCircle(g:Graphics2D, color:Color, center:Vector2, radius:Double) = {
+    g.setColor(color)
+    g.drawArc(center.x-radius, center.y-radius,
+        radius*2, radius*2,
+        0,360)
+  }
+  
   /** 描画処理 */
   override def onPaint(g:Graphics2D) =
     onPaintEventHandlers.foreach(f=>f(g))

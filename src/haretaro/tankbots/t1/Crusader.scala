@@ -18,6 +18,8 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
     addOnPaintEventHandler(g =>{
       enemies.map(e => drawLine(g, Color.red, e.lastPosition, e.lastPosition+e.lastVelocity*10))
       enemies.map(e => drawRect(g, Color.red, e.linerPrediction(getTime,0) - Vector2(16,16), 32, 32))
+      drawCircle(g,Color.green,Vector2(getX,getY),150)
+      drawCircle(g,Color.green,Vector2(getX,getY),400)
     })
     
     Painter.paintTan(this)
@@ -27,7 +29,16 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
     while(true){
       updateEnemyInfo
       radar
-      if(getTime % 5 == 0 ) nearestEnemy.map(e => linerPrediction(e,2))
+      if(getTime % 5 == 0 ){
+        nearestEnemy.map(e => {
+          val power = (e.linerPrediction(getTime,0) - Vector2(getX,getY)).magnitude match{
+            case d if d<150 => 3.0
+            case d if d>400 => 1.0
+            case _ => 2.0
+          }
+          linerPrediction(e,power)
+        })
+      }
       reservedFire
       gravityDrive
       execute
