@@ -27,7 +27,7 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
     while(true){
       updateEnemyInfo
       radar
-      if(getTime % 5 == 0 ) nearestEnemy.map(e => roughLinerPrediction(e,2))
+      if(getTime % 5 == 0 ) nearestEnemy.map(e => linerPrediction(e,2))
       reservedFire
       gravityDrive
       execute
