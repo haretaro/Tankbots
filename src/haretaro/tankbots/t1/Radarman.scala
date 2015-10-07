@@ -27,7 +27,7 @@ trait Radarman extends AdvancedRobot with Commander{
   def radar = {
     getTime match{
       case t if getOthers > 1 && (t/10)%2==0 || enemies.size == 0 => setTurnRadarRight(45)
-      case _ => nearestEnemy.map(_.position).orElse(Option(Vector2(0,0))).map(p => lookAt(p))
+      case _ => nearestEnemy.map(_.lastPosition).orElse(Option(Vector2(0,0))).map(p => lookAt(p))
     }
   }
 }

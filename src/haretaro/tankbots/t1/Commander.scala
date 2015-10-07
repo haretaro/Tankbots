@@ -25,19 +25,14 @@ trait Commander extends AdvancedRobot{
     val velocity = Vector2.fromTheta(e.getVelocity, e.getHeadingRadians)
     
     val enemy = enemies.find(_.name == e.getName) match{
-      case Some(enemy) =>{
-        enemy.position = position
-        enemy.velocity = velocity
-        enemy.energy = e.getEnergy
-        enemy
-      }
+      case Some(enemy) => enemy
       case None => {
-        val enemy = Enemy(e.getName,position,velocity,e.getEnergy)
+        val enemy = Enemy(e.getName)
         enemies = enemies + enemy
         enemy
       }
     }
-    enemy.timeLastUpdated = e.getTime
+    enemy.push(e.getTime, position, velocity)
   }
   
   /**
@@ -52,7 +47,7 @@ trait Commander extends AdvancedRobot{
    */
   def nearestEnemy = enemies match{
     case e if e.isEmpty => None
-    case _ => Option(enemies.minBy(e=>(e.position - Vector2(getX,getY)).magnitude))
+    case _ => Option(enemies.minBy(e=>(e.lastPosition - Vector2(getX,getY)).magnitude))
   }
   
 }

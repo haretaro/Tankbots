@@ -16,7 +16,7 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
     initDriver
     
     addOnPaintEventHandler(g =>{
-      enemies.map(e => drawLine(g, Color.red, e.position, e.position+e.velocity*10))
+      enemies.map(e => drawLine(g, Color.red, e.lastPosition, e.lastPosition+e.lastVelocity*10))
       enemies.map(e => drawRect(g, Color.red, e.linerPrediction(getTime,0) - Vector2(16,16), 32, 32))
     })
     
@@ -43,10 +43,10 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
       chameleon.update
       setFire(3)
       setAhead(0)
+      setTurnGunRight(300)
       setTurnRadarRight(360)
-      turnRight(30)
-      setTurnRadarRight(-360)
-      turnLeft(30)
+      setTurnRight(30)
+      execute
     }
   }
 }

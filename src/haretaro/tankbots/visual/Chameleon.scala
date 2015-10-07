@@ -12,13 +12,14 @@ case class Chameleon(val robot:Robot) {
   var hue = 0
   
   /** 色相の調整量/update */
-  var delta = 90
+  var delta = 20
   
   /** 色を更新する */
   def update = {
     robot.setRadarColor(new Color(red(hue),green(hue),blue(hue)))
     robot.setGunColor(new Color(red(hue+10),green(hue+10),blue(hue+10)))
     robot.setBodyColor(new Color(red(hue+20),green(hue+20),blue(hue+20)))
+    robot.setRadarColor(new Color(red(hue),green(hue),blue(hue)))
     hue += delta
   }
   
