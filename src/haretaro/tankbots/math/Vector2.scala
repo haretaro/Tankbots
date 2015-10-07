@@ -18,6 +18,12 @@ case class Vector2 (val x:Double, val y:Double){
   /** @return 正規化したベクトル */
   def normalized = this/magnitude
   
+  /**
+   * @param angle ラジアン
+   * @return angleだけ回転したベクトルを返す
+   */
+  def rotate(angle:Double) = Vector2.fromTheta(magnitude, this.angle + angle)
+  
   def +(that:Vector2) = Vector2(x+that.x, y+that.y)
   def -(that:Vector2) = Vector2(x-that.x, y-that.y)
   def *(that:Int) = Vector2(x*that, y*that)

@@ -20,10 +20,21 @@ object Painter{
   
   /** タンカラーに塗装する*/
   def paintTan(r:Robot) = {
-    r.setBodyColor(tanColor);
-    r.setGunColor(tanColor);
-    r.setRadarColor(tanColor);
-    r.setScanColor(Color.orange);
-    r.setBulletColor(Color.orange);
+    r.setBodyColor(tanColor)
+    r.setGunColor(tanColor)
+    r.setRadarColor(tanColor)
+    r.setScanColor(Color.orange)
+    r.setBulletColor(Color.orange)
+  }
+  
+  /** オリーブドラブ */
+  val oliveDrab = new Color(128,128,64)
+  
+  def paintOliveDrab(r:Robot) = {
+    r.setBodyColor(oliveDrab)
+    r.setGunColor(oliveDrab)
+    r.setRadarColor(oliveDrab)
+    r.setScanColor(Color.orange)
+    r.setBulletColor(Color.orange)
   }
 }
