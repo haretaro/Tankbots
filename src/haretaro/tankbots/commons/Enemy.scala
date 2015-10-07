@@ -9,7 +9,9 @@ case class Enemy(name:String){
   
   private var history = Seq[EnemyHistory]()
   
-  /** @return 速度ベクトルが一定の場合の現在時刻からt時間後の未来位置 */
+  /**
+   * @return 速度ベクトルが一定の場合の現在時刻からt時間後の未来位置.t=0で現在位置
+   */
   def linerPrediction(now:Long, t:Int) = {
     val position = history.last.position
     val velocity = history.last.velocity
