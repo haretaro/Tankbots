@@ -10,7 +10,7 @@ import robocode._
  * @author Haretaro
  * クルセイダー戦車だ！
  */
-class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with GraphicalDebugger{
+class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with Dancer with GraphicalDebugger{
   
   override def run = {
     initDriver
@@ -37,16 +37,10 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
   /** 勝利のダンスを踊る */
   override def onWin(e:WinEvent) = {
     setBulletColor(Color.red)
-    val chameleon = Chameleon(this)
     
-    while(true){
-      chameleon.update
-      setFire(3)
-      setAhead(0)
-      setTurnGunRight(300)
-      setTurnRadarRight(360)
-      setTurnRight(30)
-      execute
+    getRoundNum%2 match{
+      case 0 => trackerDance
+      case 1 => chameleonDance
     }
   }
 }
