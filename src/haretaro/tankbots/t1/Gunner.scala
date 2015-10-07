@@ -1,7 +1,7 @@
 package haretaro.tankbots.t1
 
-import haretaro.tankbots.commons.Enemy
-import haretaro.tankbots.math.{SecantMethod,Vector2}
+import haretaro.tankbots.commons.{Enemy, RoboUtil}
+import haretaro.tankbots.math.{SecantMethod, Vector2}
 import robocode.AdvancedRobot
 import robocode.util.Utils
 
@@ -9,7 +9,7 @@ import robocode.util.Utils
  * @author Haretaro
  * 砲手
  */
-trait Gunner extends AdvancedRobot with Commander{
+trait Gunner extends AdvancedRobot with Commander with RoboUtil{
   
   private var fireTime:Long = 0
   private var power:Double = 2
@@ -33,16 +33,9 @@ trait Gunner extends AdvancedRobot with Commander{
    */
   def targetAt(x:Double, y:Double):Unit = targetAt(Vector2(x,y))
   
-  /**
-   * @return 指定された位置ベクトルがフィールドの中かどうかを返す
-   */
-  def isInField(position:Vector2) = 
-    0 <= position.x && position.x <= getBattleFieldWidth &&
-    0 <= position.y && position.y <= getBattleFieldHeight
-  
   /** ラフな線形予測射撃を行う */
   def roughLinerPrediction(target:Enemy, power:Double) = {
-     targetAt(target.lastPosition + target.lastVelocity * (target.lastPosition - Vector2(getX,getY)).magnitude / (20 - 3 * power))
+     targetAt(target.lastPosition + target.lastVelocity * (target.lastPosition - Vector2(getX,getY)).magnitude / bulletSpeed(power))
      fireTime = getTime + 1
      this.power = power
   }
@@ -51,12 +44,10 @@ trait Gunner extends AdvancedRobot with Commander{
    * 線形予測射撃
    */
   def linerPrediction(target:Enemy, power:Double) = {
-    val myPosition = Vector2(getX,getY) + Vector2.fromTheta(getHeadingRadians,getVelocity)
-    
     //ある時間tにおける敵との相対位置ベクトルの大きさ - 弾が移動した距離
     //したがってf(t) = 0 となる t で弾が当たる
     val f:Double => Double = t =>
-      (target.linerPrediction(getTime,t.asInstanceOf[Int]) - myPosition).magnitude - (20 -3 * power) * t
+      (target.linerPrediction(getTime,t.asInstanceOf[Int]) - futureLinerPosition(1)).magnitude - bulletSpeed(power) * t
     
     val timeOfColision = SecantMethod(f,0,1).answer
     timeOfColision match{

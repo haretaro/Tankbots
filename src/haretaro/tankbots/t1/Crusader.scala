@@ -10,7 +10,7 @@ import robocode._
  * @author Haretaro
  * クルセイダー戦車だ！
  */
-class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with Dancer with GraphicalDebugger{
+class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with RoboUtil with Dancer with GraphicalDebugger{
   
   override def run = {
     initDriver
@@ -18,8 +18,8 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
     addOnPaintEventHandler(g =>{
       enemies.map(e => drawLine(g, Color.red, e.lastPosition, e.lastPosition+e.lastVelocity*10))
       enemies.map(e => drawRect(g, Color.red, e.linerPrediction(getTime,0) - Vector2(16,16), 32, 32))
-      drawCircle(g,Color.green,Vector2(getX,getY),150)
-      drawCircle(g,Color.green,Vector2(getX,getY),400)
+      drawCircle(g,Color.green,currentPosition,150)
+      drawCircle(g,Color.green,currentPosition,400)
     })
     
     Painter.paintTan(this)
