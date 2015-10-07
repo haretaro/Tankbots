@@ -12,7 +12,6 @@ case class BisectionMethod(val f:Double => Double,
     def ans(x1:Double, x2:Double):Option[Double] = {
       val m = (x1 + x2)/2
       
-      println(x1,x2,f(x1)*f(m))
       f(x1) * f(m) match {
         case _ if math.abs(x1-x2) <= epsilon && f(x1)*f(x2)<=0 => Option(m)
         case _ if f(x1)*f(x2) > 0 => None
