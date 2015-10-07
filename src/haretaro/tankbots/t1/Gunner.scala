@@ -55,9 +55,8 @@ trait Gunner extends AdvancedRobot with Commander{
     
     //ある時間tにおける敵との相対位置ベクトルの大きさ - 弾が移動した距離
     //したがってf(t) = 0 となる t で弾が当たる
-    val f:Double => Double = t => {
+    val f:Double => Double = t =>
       (target.linerPrediction(getTime,t.asInstanceOf[Int]) - myPosition).magnitude - (20 -3 * power) * t
-    }
     
     val timeOfColision = SecantMethod(f,0,1).answer
     timeOfColision match{
