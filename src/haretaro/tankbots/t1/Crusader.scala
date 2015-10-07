@@ -19,7 +19,6 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
       enemies.map(e => drawLine(g, Color.red, e.lastPosition, e.lastPosition+e.lastVelocity*10))
       enemies.map(e => drawRect(g, Color.red, e.linerPrediction(getTime,0) - Vector2(16,16), 32, 32))
       drawCircle(g,Color.green,currentPosition,150)
-      drawCircle(g,Color.green,currentPosition,400)
     })
     
     Painter.paintTan(this)
@@ -33,7 +32,6 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
         nearestEnemy.map(e => {
           val power = (e.linerPrediction(getTime,0) - Vector2(getX,getY)).magnitude match{
             case d if d<150 => 3.0
-            case d if d>400 => 1.0
             case _ => 2.0
           }
           linerPrediction(e,power)
