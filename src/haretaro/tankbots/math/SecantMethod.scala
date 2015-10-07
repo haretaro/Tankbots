@@ -17,7 +17,6 @@ case class SecantMethod(val f:Double => Double, val init1:Double, val init2:Doub
    */
   def answer = {
     def ans(x1:Double, df1:Double, numberOfCall:Int):Option[Double] = {
-      println(x1,f(x1))
       val x2 = x1 - f(x1)/df1
       val df2 = (f(x1)-f(x2))/(x1-x2)
       math.abs(f(x2)) match{
