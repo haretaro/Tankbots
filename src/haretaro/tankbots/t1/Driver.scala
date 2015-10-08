@@ -16,7 +16,7 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger{
   /** 重力のデバッグ描画用 (始点,終点) */
   private var gravity = (Vector2(0,0),Vector2(0,0))
   
-  /** イベントハンドラーを登録する */
+  /** グラフィカルデバッグ用のイベントハンドラーを登録する */
   def initDriver = addOnPaintEventHandler(g => drawLine(g,Color.green,gravity._1,gravity._2))
   
   /** 重力移動 */

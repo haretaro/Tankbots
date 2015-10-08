@@ -5,6 +5,7 @@ import robocode._
 
 /**
  * @author Haretaro
+ * よく使う表現を集めたトレイト
  */
 trait RoboUtil extends AdvancedRobot{
   

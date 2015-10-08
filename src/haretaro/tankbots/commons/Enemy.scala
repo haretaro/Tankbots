@@ -42,7 +42,8 @@ case class Enemy(name:String){
   }
   
   /**
-   * 円形予測を行う
+   * 速度の大きさと向きの変化が一定の時のt時間後の位置
+   * 計算できるだけの情報がない場合はNoneが返る
    */
   def circlarPrediction(now:Long, t:Int) = {
     history match{
@@ -50,7 +51,7 @@ case class Enemy(name:String){
       case _ =>{
         var position = history.last.position
         var velocity = history.last.velocity
-        for (i <- 0 to t + (now - timeLastUpdated).asInstanceOf[Int]){
+        for (i <- 1 to t + (now - timeLastUpdated).asInstanceOf[Int]){
           position += velocity
           velocity = velocity.rotate(deltaRotation)
         }

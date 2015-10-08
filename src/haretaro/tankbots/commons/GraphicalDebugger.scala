@@ -17,7 +17,7 @@ trait GraphicalDebugger extends Robot{
   def addOnPaintEventHandler(handler:Graphics2D=>Unit) =
     onPaintEventHandlers = onPaintEventHandlers :+ handler
   
-  //Double から Int への暗黙の型変換
+  /** Double から Int への暗黙の型変換 */
   implicit def convert(value:Double) = value.asInstanceOf[Int]
   
   /** 線分を描画する */
@@ -32,6 +32,7 @@ trait GraphicalDebugger extends Robot{
     g.drawRect(position.x,position.y,width,height)
   }
   
+  /** 円を描画する */
   def drawCircle(g:Graphics2D, color:Color, center:Vector2, radius:Double) = {
     g.setColor(color)
     g.drawArc(center.x-radius, center.y-radius,
