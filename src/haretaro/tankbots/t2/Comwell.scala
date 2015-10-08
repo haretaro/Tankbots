@@ -10,9 +10,9 @@ import robocode._
 
 /**
  * @author Haretaro
- * 円形予測射撃能力と斥力移動能力をもつ戦車クルセイダー巡航戦車
+ * 円形予測射撃能力と斥力移動能力をもつクロムウェル戦車
  */
-class Comwell extends AdvancedRobot with CirclarGunner with Driver with Radarman with RoboUtil with Dancer with GraphicalDebugger{
+class Cromwell extends AdvancedRobot with CirclarGunner with Driver with Radarman with RoboUtil with Dancer with GraphicalDebugger{
     override def run = {
     initDriver
     
