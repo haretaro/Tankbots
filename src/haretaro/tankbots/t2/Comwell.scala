@@ -19,8 +19,11 @@ class Cromwell extends AdvancedRobot with CirclarGunner with Driver with Radarma
     addOnPaintEventHandler(g =>{
       enemies.map(e => drawLine(g, Color.red, e.lastPosition, e.lastPosition+e.lastVelocity*10))
       enemies.map(e => drawRect(g, Color.red, e.linerPrediction(getTime,0) - Vector2(16,16), 32, 32))
-      enemies.map(e => drawRect(g, Color.cyan, e.circlarPrediction(getTime,0).get - Vector2(16,16), 32, 32))
-      drawCircle(g,Color.green,currentPosition,150)
+      enemies.map(e => e.circlarPrediction(getTime, 0) match {
+          case Some(pos) => drawRect(g, Color.cyan, pos - Vector2(16,16), 32, 32)
+          case _ => ()
+      })
+      drawCircle(g,Color.green,currentPosition,150) 
     })
     
     Painter.paintOliveDrab(this)

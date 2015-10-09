@@ -1,7 +1,7 @@
 package haretaro.tankbots.t2
 
 import haretaro.tankbots.commons.{Enemy, RoboUtil}
-import haretaro.tankbots.math.{SecantMethod, Vector2}
+import haretaro.tankbots.math._
 import haretaro.tankbots.t1._
 import robocode.AdvancedRobot
 import robocode.util.Utils
@@ -38,15 +38,13 @@ trait CirclarGunner extends AdvancedRobot with Commander with RoboUtil{
    * 円形予測射撃
    */
   def circlarPrediction(target:Enemy, power:Double):Unit = {
-    //TODO: 円形予測ができない場合に対応させる
-    if (target.historySize < 2) return
-    
     //ある時間tにおける敵との相対位置ベクトルの大きさ - 弾が移動した距離
     //したがってf(t) = 0 となる t で弾が当たる
-    val f:Double => Double = t =>
-      (target.circlarPrediction(getTime,t.asInstanceOf[Int]).get - futureLinerPosition(1)).magnitude - bulletSpeed(power) * t
+    val f:Double => Option[Double] = t =>
+      target.circlarPrediction(getTime,t.asInstanceOf[Int])
+      .map(position => (position - futureLinerPosition(1)).magnitude - bulletSpeed(power) * t)
     
-    val timeOfColision = SecantMethod(f,0,1).answer
+    val timeOfColision = OptionalSecantMethod(f,0,1).answer
     timeOfColision match{
       case Some(t) => {
         val pointOfColision = target.circlarPrediction(getTime, t.round.asInstanceOf[Int]).get
