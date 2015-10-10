@@ -13,12 +13,8 @@ import robocode.util.Utils
 trait CirclarGunner extends AdvancedRobot with Commander with RoboUtil{
   
   private var fireTime:Long = 0
-  private var power:Double = 2
-  
-  /**
-   * 予約が入ってる場合に射撃を行う
-   */
-  def reservedFire() = if(getTime == fireTime) fire(power)
+  private var firePower:Double = 2
+  private var fireAngle:Double = 0
   
   /**
    * 指定した場所に砲を向ける
@@ -49,12 +45,25 @@ trait CirclarGunner extends AdvancedRobot with Commander with RoboUtil{
       case Some(t) => {
         val pointOfColision = target.circlarPrediction(getTime, t.round.asInstanceOf[Int]).get
         if(isInField(pointOfColision)){
-          targetAt(pointOfColision)
-          fireTime = getTime + 1
-          this.power = power
+          orderFire(pointOfColision,power)
         }
       }
       case _ => ()
     }
   }
+  
+  /**
+   * 射撃を予約する
+   */
+  def orderFire(point:Vector2, power:Double) = {
+    val direction = point - currentPosition
+    setTurnGunRightRadians(Utils.normalRelativeAngle(direction.angle - getGunHeadingRadians))
+    fireTime = getTime +1
+    firePower = power
+    fireAngle = direction.angle
+  }
+  
+  def executeFire = if(getTime == fireTime 
+      && fireAngle - 0.1 < getGunHeadingRadians
+      && getGunHeadingRadians < fireAngle + 0.1) setFire(firePower)
 }

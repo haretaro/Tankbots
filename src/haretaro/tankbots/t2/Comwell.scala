@@ -32,6 +32,7 @@ class Cromwell extends AdvancedRobot with CirclarGunner with Driver with Radarma
     
     while(true){
       updateEnemyInfo
+      executeFire
       radar
       if(getTime % 5 == 0 ){
         nearestEnemy.map(e => {
@@ -42,7 +43,6 @@ class Cromwell extends AdvancedRobot with CirclarGunner with Driver with Radarma
           circlarPrediction(e,power)
         })
       }
-      reservedFire
       gravityDrive
       execute
     }
