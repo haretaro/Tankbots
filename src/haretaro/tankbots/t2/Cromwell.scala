@@ -35,7 +35,7 @@ class Cromwell extends AdvancedRobot with CirclarGunner with Driver with Radarma
       executeFire
       radar
       if(getTime % 5 == 0 ){
-        nearestEnemy.map(e => {
+        nearestEnemy.foreach(e => {
           val power = (e.linerPrediction(getTime,0) - Vector2(getX,getY)).magnitude match{
             case d if d<150 => 3.0
             case _ => 2.0
