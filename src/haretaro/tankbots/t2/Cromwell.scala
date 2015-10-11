@@ -23,7 +23,7 @@ class Cromwell extends AdvancedRobot with CirclarGunner with Driver with Radarma
           case Some(pos) => drawRect(g, Color.cyan, pos - Vector2(16,16), 32, 32)
           case _ => ()
       })
-      drawCircle(g,Color.green,currentPosition,150) 
+      drawRect(g,Color.green,futureLinerPosition(1) - Vector2(16,16), 32, 32)
     })
     
     Painter.paintOliveDrab(this)

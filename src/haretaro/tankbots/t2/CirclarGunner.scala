@@ -56,7 +56,7 @@ trait CirclarGunner extends AdvancedRobot with Commander with RoboUtil{
    * 射撃を予約する
    */
   def orderFire(point:Vector2, power:Double) = {
-    val direction = point - currentPosition
+    val direction = point - futureLinerPosition(1)
     setTurnGunRightRadians(Utils.normalRelativeAngle(direction.angle - getGunHeadingRadians))
     fireTime = getTime +1
     firePower = power
