@@ -5,6 +5,7 @@ import robocode._
 
 /**
  * @author Haretaro
+ * 勝利のダンスを集めたトレイト
  */
 trait Dancer extends AdvancedRobot {
   

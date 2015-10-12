@@ -69,6 +69,5 @@ trait CirclarGunner extends AdvancedRobot with Commander with RoboUtil{
   def executeFire = {
     val gunAngle = Utils.normalAbsoluteAngleDegrees(getGunHeadingRadians)
     if(getTime == fireTime && fireAngle == gunAngle) setFire(firePower)
-    println((math.toDegrees(fireAngle),math.toDegrees(gunAngle)))
   }
 }
