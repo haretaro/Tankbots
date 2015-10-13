@@ -1,8 +1,8 @@
-package haretaro.tankbots.t2
+package haretaro.tankbots.crew
 
 import haretaro.tankbots.commons.{Enemy, RoboUtil}
+import haretaro.tankbots.crew._
 import haretaro.tankbots.math._
-import haretaro.tankbots.t1._
 import robocode.AdvancedRobot
 import robocode.util.Utils
 
@@ -10,7 +10,7 @@ import robocode.util.Utils
  * @author Haretaro
  * 砲手
  */
-trait CirclarGunner extends AdvancedRobot with Commander with RoboUtil{
+trait Gunner extends AdvancedRobot with Commander with RoboUtil{
   
   private var fireTime:Long = 0
   private var firePower:Double = 2
@@ -29,6 +29,32 @@ trait CirclarGunner extends AdvancedRobot with Commander with RoboUtil{
    * 指定した場所に砲を向ける
    */
   def targetAt(x:Double, y:Double):Unit = targetAt(Vector2(x,y))
+  
+  /** ラフな線形予測射撃を行う */
+  def roughLinerPrediction(target:Enemy, power:Double) = {
+     orderFire(target.lastPosition + target.lastVelocity * (target.lastPosition - Vector2(getX,getY)).magnitude / bulletSpeed(power),power)
+  }
+  
+  /**
+   * 線形予測射撃
+   */
+  def linerPrediction(target:Enemy, power:Double) = {
+    //ある時間tにおける敵との相対位置ベクトルの大きさ - 弾が移動した距離
+    //したがってf(t) = 0 となる t で弾が当たる
+    val f:Double => Double = t =>
+      (target.linerPrediction(getTime,t.asInstanceOf[Int]) - futureLinerPosition(1)).magnitude - bulletSpeed(power) * t
+    
+    val timeOfColision = SecantMethod(f,0,1).answer
+    timeOfColision match{
+      case Some(t) => {
+        val pointOfColision = target.linerPrediction(getTime, t.round.asInstanceOf[Int])
+        if(isInField(pointOfColision)){
+          orderFire(pointOfColision,power)
+        }
+      }
+      case _ => ()
+    }
+  }
   
   /**
    * 円形予測射撃

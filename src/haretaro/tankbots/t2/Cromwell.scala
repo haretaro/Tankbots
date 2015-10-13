@@ -1,8 +1,8 @@
 package haretaro.tankbots.t2
 
 import java.awt.Color
-
 import haretaro.tankbots.commons._
+import haretaro.tankbots.crew._
 import haretaro.tankbots.math.Vector2
 import haretaro.tankbots.t1._
 import haretaro.tankbots.visual.{Chameleon, Painter}
@@ -12,7 +12,7 @@ import robocode._
  * @author Haretaro
  * 円形予測射撃能力と斥力移動能力をもつクロムウェル戦車
  */
-class Cromwell extends AdvancedRobot with CirclarGunner with Driver with Radarman with RoboUtil with Dancer with GraphicalDebugger{
+class Cromwell extends AdvancedRobot with Gunner with Driver with Radarman with RoboUtil with Dancer with GraphicalDebugger{
     override def run = {
     initDriver
     

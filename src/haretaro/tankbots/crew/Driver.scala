@@ -1,8 +1,8 @@
-package haretaro.tankbots.t1
+package haretaro.tankbots.crew
 
 import java.awt.Color
-
 import haretaro.tankbots.commons.GraphicalDebugger
+import haretaro.tankbots.crew._
 import haretaro.tankbots.math.Vector2
 import robocode.AdvancedRobot
 import robocode.util.Utils

@@ -1,4 +1,4 @@
-package haretaro.tankbots.t1
+package haretaro.tankbots.crew
 
 import haretaro.tankbots.visual.Chameleon
 import robocode._

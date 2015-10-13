@@ -1,4 +1,4 @@
-package haretaro.tankbots.t1
+package haretaro.tankbots.crew
 
 import haretaro.tankbots.commons.Enemy
 import haretaro.tankbots.math.Vector2

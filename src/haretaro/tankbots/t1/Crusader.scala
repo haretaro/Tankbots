@@ -2,6 +2,7 @@ package haretaro.tankbots.t1
 
 import java.awt.Color
 import haretaro.tankbots.commons._
+import haretaro.tankbots.crew._
 import haretaro.tankbots.math.Vector2
 import haretaro.tankbots.visual.{Chameleon, Painter}
 import robocode._
@@ -37,7 +38,7 @@ class Crusader extends AdvancedRobot with Gunner with Driver with Radarman with 
           linerPrediction(e,power)
         })
       }
-      reservedFire
+      executeFire
       gravityDrive
       execute
     }
