@@ -42,7 +42,7 @@ trait Gunner extends AdvancedRobot with Commander with RoboUtil{
     //ある時間tにおける敵との相対位置ベクトルの大きさ - 弾が移動した距離
     //したがってf(t) = 0 となる t で弾が当たる
     val f:Double => Double = t =>
-      (target.linerPrediction(getTime,t.asInstanceOf[Int]) - futureLinerPosition(1)).magnitude - bulletSpeed(power) * t
+      (target.linerPrediction(getTime,t.asInstanceOf[Int]) - futureLinerPosition(1)).magnitude - bulletSpeed(power) * (t-1)
     
     val timeOfColision = SecantMethod(f,0,1).answer
     timeOfColision match{
@@ -59,12 +59,13 @@ trait Gunner extends AdvancedRobot with Commander with RoboUtil{
   /**
    * 円形予測射撃
    */
-  def circlarPrediction(target:Enemy, power:Double):Unit = {
+  def circlarPrediction(target:Enemy, power:Double, nextPosition:Vector2 = futureLinerPosition(1)):Unit = {
     //ある時間tにおける敵との相対位置ベクトルの大きさ - 弾が移動した距離
     //したがってf(t) = 0 となる t で弾が当たる
+    //弾は一秒後に発射されることに注意
     val f:Double => Option[Double] = t =>
       target.circlarPrediction(getTime,t.asInstanceOf[Int])
-      .map(position => (position - futureLinerPosition(1)).magnitude - bulletSpeed(power) * t)
+      .map(position => (position - nextPosition).magnitude - bulletSpeed(power) * (t-1))
     
     val timeOfColision = OptionalSecantMethod(f,0,1).answer
     timeOfColision match{

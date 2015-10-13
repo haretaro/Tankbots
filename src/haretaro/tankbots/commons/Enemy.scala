@@ -59,6 +59,4 @@ case class Enemy(name:String){
       }
     }
   }
-  
-  def historySize = history.length
 }

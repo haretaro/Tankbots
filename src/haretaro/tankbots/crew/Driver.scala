@@ -1,7 +1,7 @@
 package haretaro.tankbots.crew
 
 import java.awt.Color
-import haretaro.tankbots.commons.GraphicalDebugger
+import haretaro.tankbots.commons._
 import haretaro.tankbots.crew._
 import haretaro.tankbots.math.Vector2
 import robocode.AdvancedRobot
@@ -11,10 +11,12 @@ import robocode.util.Utils
  * @author Haretaro
  * 運転手
  */
-trait Driver extends AdvancedRobot with Commander with GraphicalDebugger{
+trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with RoboUtil{
   
   /** 重力のデバッグ描画用 (始点,終点) */
   private var gravity = (Vector2(0,0),Vector2(0,0))
+  
+  var nextPosition = Vector2(0,0)
   
   /** グラフィカルデバッグ用のイベントハンドラーを登録する */
   def initDriver = addOnPaintEventHandler(g => drawLine(g,Color.green,gravity._1,gravity._2))
@@ -43,7 +45,18 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger{
     
     setTurnRightRadians(angle)
     setMaxVelocity(speed)
-    setAhead(1000)
+    setAhead(100)
+    val nextSpeed = getVelocity match{
+      case v if v + 1 <= speed => v + 1
+      case v if v + 1 > speed => speed
+    }
+    val nextAngle = angle match{
+      case ang if math.abs(ang) < maxRateOfRotation => getHeading + ang
+      case ang if ang >= maxRateOfRotation => getHeading + maxRateOfRotation
+      case ang if ang <= -maxRateOfRotation => getHeading - maxRateOfRotation
+    }
+    nextPosition = currentPosition + Vector2.fromDegrees(nextSpeed,nextAngle)
+    println(nextAngle,nextSpeed,nextPosition)
     this.gravity = (position, gravity + position)
   }
   

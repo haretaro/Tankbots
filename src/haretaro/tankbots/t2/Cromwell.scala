@@ -23,7 +23,7 @@ class Cromwell extends AdvancedRobot with Gunner with Driver with Radarman with 
           case Some(pos) => drawRect(g, Color.cyan, pos - Vector2(16,16), 32, 32)
           case _ => ()
       })
-      drawRect(g,Color.green,futureLinerPosition(1) - Vector2(16,16), 32, 32)
+      drawRect(g,Color.green,nextPosition - Vector2(16,16), 32, 32)
     })
     
     Painter.paintOliveDrab(this)
@@ -40,7 +40,7 @@ class Cromwell extends AdvancedRobot with Gunner with Driver with Radarman with 
             case d if d<150 => 3.0
             case _ => 2.0
           }
-          circlarPrediction(e,power)
+          circlarPrediction(e,power,nextPosition)
         })
       }
       gravityDrive
