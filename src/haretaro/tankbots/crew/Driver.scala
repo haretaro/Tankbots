@@ -56,7 +56,6 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
       case ang if ang <= -maxRateOfRotation => getHeading - maxRateOfRotation
     }
     nextPosition = currentPosition + Vector2.fromDegrees(nextSpeed,nextAngle)
-    println(nextAngle,nextSpeed,nextPosition)
     this.gravity = (position, gravity + position)
   }
   

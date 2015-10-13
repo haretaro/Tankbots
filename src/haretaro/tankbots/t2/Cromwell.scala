@@ -15,6 +15,7 @@ import robocode._
 class Cromwell extends AdvancedRobot with Gunner with Driver with Radarman with RoboUtil with Dancer with GraphicalDebugger{
     override def run = {
     initDriver
+    initGunner
     
     addOnPaintEventHandler(g =>{
       enemies.map(e => drawLine(g, Color.red, e.lastPosition, e.lastPosition+e.lastVelocity*10))
