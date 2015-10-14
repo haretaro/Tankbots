@@ -18,14 +18,22 @@ trait Gunner extends AdvancedRobot with Commander with RoboUtil with GraphicalDe
   private var firePower:Double = 2
   private var fireAngle:Double = 0
   
-  private var pointOfColl = Vector2(0,0)
+  private var pointOfCol = Vector2(0,0)
+  private var timeOfCol = 0l
+  private var target = ""
+  private var firePos = Vector2(0,0)
   
-  /**
-   * 描画イベントハンドラを登録する
-   */
-  def initGunner = addOnPaintEventHandler(g => {
-    this.drawRect(g,Color.red,pointOfColl-Vector2(16,16),32,32)
+  def initGunner = addOnPaintEventHandler(g=>{
+    drawRect(g,Color.orange,pointOfCol - Vector2(16,16), 32, 32)
+    drawLine(g, Color.orange, firePos, pointOfCol)
+    drawRect(g, Color.red, firePos + (pointOfCol - firePos).normalized * bulletSpeed(firePower) * (getTime - fireTime) - Vector2(6,6), 12, 12)
   })
+  
+  def updateGunner = if(timeOfCol == getTime){
+    enemies.find(_.name == target).foreach(e => println((e.lastPosition - pointOfCol).magnitude))
+    println("bullet error = " + (firePos + (pointOfCol - firePos).normalized * bulletSpeed(firePower) * (getTime - fireTime) - pointOfCol).magnitude)
+    println("")
+  }
   
   /**
    * 指定した場所に砲を向ける
@@ -75,15 +83,20 @@ trait Gunner extends AdvancedRobot with Commander with RoboUtil with GraphicalDe
     //したがってf(t) = 0 となる t で弾が当たる
     //弾は一秒後に発射されることに注意
     val f:Double => Option[Double] = t =>
-      target.circlarPrediction(getTime,t.asInstanceOf[Int])
-      .map(position => (position - futurePosition).magnitude - bulletSpeed(power) * (t-1))
+      target.circlarPrediction2(getTime,t)
+      .map(enemyPosition => (enemyPosition - futurePosition).magnitude - bulletSpeed(power) * (t-1))
     
     val timeOfColision = OptionalSecantMethod(f,0,1).answer
     timeOfColision match{
       case Some(t) => {
-        val pointOfColision = target.circlarPrediction(getTime, t.round.asInstanceOf[Int]).get
-        pointOfColl = pointOfColision
+        val pointOfColision = target.circlarPrediction2(getTime, t).get
         if(isInField(pointOfColision)) orderFire(pointOfColision,power,futurePosition)
+        pointOfCol = pointOfColision
+        timeOfCol = getTime + t.asInstanceOf[Long]
+        this.target = target.name
+        firePos = futurePosition
+        
+        println("f(t) == " + f(t))
       }
       case _ => ()
     }
@@ -104,6 +117,7 @@ trait Gunner extends AdvancedRobot with Commander with RoboUtil with GraphicalDe
    * 砲塔の旋回が終わっている場合に予約された射撃を実行する
    */
   def executeFire = {
+    //自分の位置の予測と実際の位置の誤差
     val gunAngle = Utils.normalAbsoluteAngleDegrees(getGunHeadingRadians)
     if(getTime == fireTime && fireAngle == gunAngle) setFire(firePower)
   }

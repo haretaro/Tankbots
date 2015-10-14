@@ -51,12 +51,49 @@ case class Enemy(name:String){
       case _ =>{
         var position = history.last.position
         var velocity = history.last.velocity
-        for (i <- 1 to t + (now - timeLastUpdated).asInstanceOf[Int]){
+        for (i <- 0 to t + (now - timeLastUpdated).asInstanceOf[Int]){
           position += velocity
           velocity = velocity.rotate(deltaRotation)
         }
         Option(position)
       }
     }
+  }
+  
+  def circlarPrediction2(time:Long, t:Int) = {
+    def next(position:Vector2, velocity:Vector2, delta:Double, t:Int):Vector2 = {
+      if(t==0){
+        position
+      }else{
+        next(position + velocity.rotate(delta), velocity.rotate(delta), delta, t-1)
+      }
+    }
+    val origin1 = history.find(_.time == time-1)
+    val origin2 = history.find(_.time == time)
+    (origin1,origin2) match{
+      case (Some(o1),Some(o2)) => {
+        val delta = o2.velocity.angle - o1.velocity.angle
+        Option(next(o2.position, o2.velocity, delta, t))
+      }
+      case _ => None
+    }
+  }
+  
+  /**
+   * 連続して情報を取得しているターン数
+   */
+  def stroak = {
+    def calc(list:Seq[EnemyHistory]):Int = {
+      val enemy :: tail = list
+      tail match{
+        case prev :: li if prev.time == enemy.time-1 => calc(tail)+1
+        case _ => 0
+      }
+    }
+    calc(history.reverse)
+  }
+  
+  def circlarPredictionError(now:Long) = {
+    circlarPrediction2(now-10,10).map(p => (history.last.position - p).magnitude)
   }
 }

@@ -16,7 +16,8 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
   /** 重力のデバッグ描画用 (始点,終点) */
   private var gravity = (Vector2(0,0),Vector2(0,0))
   
-  var nextPosition = Vector2(0,0)
+  private var _nextPosition = Vector2(0,0)
+  private var timeLastUpdated = 0l
   
   /** グラフィカルデバッグ用のイベントハンドラーを登録する */
   def initDriver = addOnPaintEventHandler(g => drawLine(g,Color.green,gravity._1,gravity._2))
@@ -47,15 +48,19 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
     setMaxVelocity(speed)
     setAhead(100)
     val nextSpeed = getVelocity match{
-      case v if v + 1 <= speed => v + 1
+      case v if speed > v && v + 1 <= speed => v + 1
       case v if v + 1 > speed => speed
+      case v if v < speed && v - 2 >= speed => v - 2
+      case v if v -2 < speed => speed
     }
-    val nextAngle = angle match{
+    val nextAngle = math.toDegrees(angle) match{
       case ang if math.abs(ang) < maxRateOfRotation => getHeading + ang
       case ang if ang >= maxRateOfRotation => getHeading + maxRateOfRotation
       case ang if ang <= -maxRateOfRotation => getHeading - maxRateOfRotation
+      
     }
-    nextPosition = currentPosition + Vector2.fromDegrees(nextSpeed,nextAngle)
+    _nextPosition = currentPosition + Vector2.fromDegrees(nextSpeed,nextAngle)
+    timeLastUpdated = getTime
     this.gravity = (position, gravity + position)
   }
   
@@ -74,4 +79,11 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
    * @param x,y 目的地の座標
    */
   def goTo(x:Double,y:Double):Unit = goTo(Vector2(x,y))
+  
+  def nextPosition = if(getTime == timeLastUpdated){
+    _nextPosition
+  }else{
+    println(getTime,timeLastUpdated)
+    throw new Exception("nextPositionを呼び出す前にドライバーにこのターンの移動を決定させてください")
+  }
 }

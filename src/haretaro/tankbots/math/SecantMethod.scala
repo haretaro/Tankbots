@@ -20,7 +20,7 @@ case class SecantMethod(val f:Double => Double, val init1:Double, val init2:Doub
       val x2 = x1 - f(x1)/df1
       val df2 = (f(x1)-f(x2))/(x1-x2)
       math.abs(f(x2)) match{
-        case y if y < epsilon => Option(x2)
+        case y if math.abs(y) < epsilon => Option(x2)
         case _ if numberOfCall >= attemptLimits => None
         case _ => ans(x2,df2,numberOfCall+1)
       }

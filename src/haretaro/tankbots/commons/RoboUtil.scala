@@ -33,7 +33,7 @@ trait RoboUtil extends AdvancedRobot{
   def bulletSpeed(power:Double) = 20 - 3 * power
   
   /**
- * @return 旋回できる角度の最大値 deg/turn
+   * @return 旋回できる角度の最大値 deg/turn
    */
   def maxRateOfRotation = 10 - 0.75 * math.abs(getVelocity)
 }

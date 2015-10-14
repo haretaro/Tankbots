@@ -13,38 +13,41 @@ import robocode._
  * 円形予測射撃能力と斥力移動能力をもつクロムウェル戦車
  */
 class Cromwell extends AdvancedRobot with Gunner with Driver with Radarman with RoboUtil with Dancer with GraphicalDebugger{
-    override def run = {
+  
+  override def run = {
     initDriver
-    initGunner
+    //initGunner
     
     addOnPaintEventHandler(g =>{
-      enemies.map(e => drawLine(g, Color.red, e.lastPosition, e.lastPosition+e.lastVelocity*10))
-      enemies.map(e => drawRect(g, Color.red, e.linerPrediction(getTime,0) - Vector2(16,16), 32, 32))
-      enemies.map(e => e.circlarPrediction(getTime, 0) match {
+      enemies.map(e => e.circlarPrediction2(getTime, 0) match {
           case Some(pos) => drawRect(g, Color.cyan, pos - Vector2(16,16), 32, 32)
           case _ => ()
       })
-      drawRect(g,Color.green,nextPosition - Vector2(16,16), 32, 32)
+      for(i <- 0 to 5){
+        enemies.map(e => e.circlarPrediction2(getTime,i*5).foreach(pos =>
+          drawRect(g, Color.cyan, pos - Vector2(16,16), 32, 32)))
+      }
     })
     
     Painter.paintOliveDrab(this)
     if(getRoundNum == 3) Painter.paintStealth(this)
     setAdjustGunForRobotTurn(true)
-    
+    var prev = Vector2(0,0)
     while(true){
+      
       updateEnemyInfo
+      updateGunner
       executeFire
       radar
-      if(getTime % 5 == 0 ){
+      gravityDrive
+      
+      prev = nextPosition
+      if(getTime % 3 == 0 ){
         nearestEnemy.foreach(e => {
-          val power = (e.linerPrediction(getTime,0) - Vector2(getX,getY)).magnitude match{
-            case d if d<150 => 3.0
-            case _ => 2.0
-          }
-          circlarPrediction(e,power,nextPosition)
+          //println(e.circlarPredictionError(getTime))
+          circlarPrediction(e,3d,nextPosition)
         })
       }
-      gravityDrive
       execute
     }
   }
