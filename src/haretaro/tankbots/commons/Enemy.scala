@@ -62,10 +62,11 @@ case class Enemy(name:String){
   
   def circlarPrediction2(time:Long, t:Int) = {
     def next(position:Vector2, velocity:Vector2, delta:Double, t:Int):Vector2 = {
-      if(t==0){
+      if(t<=0){
         position
       }else{
-        next(position + velocity.rotate(delta), velocity.rotate(delta), delta, t-1)
+        val v = velocity.rotate(delta)
+        next(position + v, v, delta, t-1)
       }
     }
     val origin1 = history.find(_.time == time-1)
@@ -95,5 +96,9 @@ case class Enemy(name:String){
   
   def circlarPredictionError(now:Long) = {
     circlarPrediction2(now-10,10).map(p => (history.last.position - p).magnitude)
+  }
+  
+  def update = {
+    history = history.takeRight(20)
   }
 }

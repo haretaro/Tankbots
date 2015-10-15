@@ -18,34 +18,31 @@ class Cromwell extends AdvancedRobot with Gunner with Driver with Radarman with 
     initDriver
     //initGunner
     
+    
     addOnPaintEventHandler(g =>{
-      enemies.map(e => e.circlarPrediction2(getTime, 0) match {
-          case Some(pos) => drawRect(g, Color.cyan, pos - Vector2(16,16), 32, 32)
-          case _ => ()
-      })
+      enemies.map(e => drawRect(g, Color.red, e.linerPrediction(getTime,0) - Vector2(16,16), 32, 32))
       for(i <- 0 to 5){
         enemies.map(e => e.circlarPrediction2(getTime,i*5).foreach(pos =>
           drawRect(g, Color.cyan, pos - Vector2(16,16), 32, 32)))
       }
     })
     
+    
     Painter.paintOliveDrab(this)
     if(getRoundNum == 3) Painter.paintStealth(this)
     setAdjustGunForRobotTurn(true)
-    var prev = Vector2(0,0)
     while(true){
       
       updateEnemyInfo
-      updateGunner
+      //updateGunner
       executeFire
       radar
       gravityDrive
       
-      prev = nextPosition
       if(getTime % 3 == 0 ){
         nearestEnemy.foreach(e => {
           //println(e.circlarPredictionError(getTime))
-          circlarPrediction(e,3d,nextPosition)
+          circlarPrediction(e,2d,nextPosition)
         })
       }
       execute

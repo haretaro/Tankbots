@@ -89,14 +89,16 @@ trait Gunner extends AdvancedRobot with Commander with RoboUtil with GraphicalDe
     val timeOfColision = OptionalSecantMethod(f,0,1).answer
     timeOfColision match{
       case Some(t) => {
-        val pointOfColision = target.circlarPrediction2(getTime, t).get
-        if(isInField(pointOfColision)) orderFire(pointOfColision,power,futurePosition)
-        pointOfCol = pointOfColision
-        timeOfCol = getTime + t.asInstanceOf[Long]
-        this.target = target.name
-        firePos = futurePosition
-        
-        println("f(t) == " + f(t))
+        target.circlarPrediction2(getTime,t) match{
+          case Some(pointOfColision) => {
+            if(isInField(pointOfColision)) orderFire(pointOfColision,power,futurePosition)
+            pointOfCol = pointOfColision
+            timeOfCol = getTime + t
+            this.target = target.name
+            firePos = futurePosition
+          }
+          case _ => ()
+        }
       }
       case _ => ()
     }

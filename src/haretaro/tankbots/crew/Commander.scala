@@ -39,7 +39,8 @@ trait Commander extends AdvancedRobot{
    * 数ターン以上レーダーが捉えてない敵をリストから消去する
    */
   def updateEnemyInfo = {
-    enemies = enemies.filter(e=>getTime - e.timeLastUpdated < 20)
+    enemies.foreach(e => e.update)
+    enemies = enemies.filterNot(e => e.timeLastUpdated < getTime - 50)
   }
   
   /**

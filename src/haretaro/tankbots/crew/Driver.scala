@@ -28,13 +28,13 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
     val center = Vector2(getBattleFieldWidth/2,getBattleFieldHeight/2)
     val enemyVectors = enemies
       .map(position - _.linerPrediction(getTime,1))//敵との相対ベクトルをそれぞれ求めて
-      .map(r => r * 10000/math.pow(r.magnitude,2))//距離の２乗に反比例した大きさにする
+      .map(r => r * 100000/math.pow(r.magnitude,2))//距離の２乗に反比例した大きさにする
     val enemyVector = enemyVectors match{
       case v if v.isEmpty => (center - position) / 100 //敵の座標がわからなくてベクトルが定まらない場合はマップの中心に向かう
-      case v => v.reduceLeft(_+_)
+      case v => v.reduceLeft(_+_)/getOthers
     }
     
-    val wallVector = (center - position) * (center - position).magnitude /300
+    val wallVector = (center - position) * 0.00001 * math.pow((center-position).magnitude,2)
     val gravity = enemyVector + wallVector //中心に向かうベクトルを加算して壁にぶつからないようにする
     
     val angle = Utils.normalRelativeAngle(gravity.angle - getHeadingRadians)
