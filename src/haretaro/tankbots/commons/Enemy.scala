@@ -7,7 +7,7 @@ import haretaro.tankbots.math.Vector2
  */
 case class Enemy(name:String){
   
-  private var history = Seq[EnemyHistory]()
+  private var history = Seq[EnemyInfo]()
   
   /**
    * @return 速度ベクトルが一定の場合の現在時刻からt時間後の未来位置.t=0で現在位置
@@ -22,7 +22,7 @@ case class Enemy(name:String){
    * 情報をリストに追加する
    */
   def push(time:Long, position:Vector2, velocity:Vector2) =
-    history = history :+ EnemyHistory(time, position, velocity)
+    history = history :+ EnemyInfo(time, position, velocity)
   
   /** 最後に観測された時刻 */
   def timeLastUpdated = history.last.time
@@ -84,7 +84,7 @@ case class Enemy(name:String){
    * 連続して情報を取得しているターン数
    */
   def stroak = {
-    def calc(list:Seq[EnemyHistory]):Int = {
+    def calc(list:Seq[EnemyInfo]):Int = {
       val enemy :: tail = list
       tail match{
         case prev :: li if prev.time == enemy.time-1 => calc(tail)+1
