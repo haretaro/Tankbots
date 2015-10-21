@@ -21,8 +21,8 @@ case class Enemy(name:String){
   /**
    * 情報をリストに追加する
    */
-  def push(time:Long, position:Vector2, velocity:Vector2) =
-    history = history :+ EnemyInfo(time, position, velocity)
+  def push(time:Long, position:Vector2, velocity:Vector2, energy:Double) =
+    history = history :+ EnemyInfo(time, position, velocity, energy)
   
   /** 最後に観測された時刻 */
   def timeLastUpdated = history.last.time
@@ -98,7 +98,15 @@ case class Enemy(name:String){
     circlarPrediction2(now-10,10).map(p => (history.last.position - p).magnitude)
   }
   
-  def update = {
-    history = history.takeRight(20)
+  def update = history = history.takeRight(20)
+  
+  def didShoot = {
+    if(history.length > 1){
+      val his = history.takeRight(2)
+      val delta = his(1).energy - his(0).energy
+      -3 <= delta && delta < 0
+    }else{
+      false
+    }
   }
 }

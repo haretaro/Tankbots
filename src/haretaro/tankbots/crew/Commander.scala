@@ -32,7 +32,7 @@ trait Commander extends AdvancedRobot{
         enemy
       }
     }
-    enemy.push(e.getTime, position, velocity)
+    enemy.push(e.getTime, position, velocity, e.getEnergy)
   }
   
   /**

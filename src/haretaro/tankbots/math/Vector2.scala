@@ -36,6 +36,12 @@ case class Vector2 (val x:Double, val y:Double){
   def *(that:Double) = Vector2(x*that, y*that)
   def /(that:Int) = Vector2(x/that, y/that)
   def /(that:Double) = Vector2(x/that, y/that)
+  def unary_- = Vector2(-x,-y)
+  
+  /**
+   * 内積
+   */
+  def *(that:Vector2) = x*that.x + y*that.y
 }
 
 object Vector2{

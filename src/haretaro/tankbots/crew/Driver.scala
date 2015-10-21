@@ -64,6 +64,28 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
     this.gravity = (position, gravity + position)
   }
   
+  def simpleAvoid = {
+    nearestEnemy.foreach(e=>{
+      val relative = e.lastPosition - currentPosition
+      val direction = relative.magnitude match{
+        case d if d > 300 => relative.rotateDegrees(90) + relative.normalized
+        case _ => relative.rotateDegrees(90)
+      }
+      setTurnRightRadians(Utils.normalRelativeAngle(direction.angle - getHeadingRadians))
+      if(e.didShoot){
+        //中心へのベクトルとの内積が小さくなる方向に動く => 壁にぶつからない方向
+        if(direction * centralVector > -direction * centralVector){
+          setAhead(50)
+        }else{
+          setAhead(-50)
+        }
+      }else{
+        _nextPosition = currentPosition
+      }
+    })
+    timeLastUpdated = getTime
+  }
+  
   /**
    * 指定の場所に移動する
    * @param destination 目的地の位置ベクトル
