@@ -23,7 +23,6 @@ object Painter{
     r.setBodyColor(tanColor)
     r.setGunColor(tanColor)
     r.setRadarColor(tanColor)
-    r.setScanColor(Color.orange)
     r.setBulletColor(Color.orange)
   }
   
@@ -34,7 +33,14 @@ object Painter{
     r.setBodyColor(oliveDrab)
     r.setGunColor(oliveDrab)
     r.setRadarColor(oliveDrab)
-    r.setScanColor(Color.orange)
+    r.setBulletColor(Color.orange)
+  }
+  
+  val armyGreen = new Color(29,33,13)
+  
+  /**アーミーグリーンに塗装する*/
+  def paintGreen(r:Robot) = {
+    r.setAllColors(armyGreen)
     r.setBulletColor(Color.orange)
   }
 }

@@ -28,8 +28,8 @@ class Churchill extends AdvancedRobot with Gunner with Driver with Radarman with
     })
     
     
-    Painter.paintOliveDrab(this)
-    if(getRoundNum == 3) Painter.paintStealth(this)
+    Painter.paintBrown(this)
+    if(getRoundNum == 4) Painter.paintStealth(this)
     setAdjustGunForRobotTurn(true)
     while(true){
       
