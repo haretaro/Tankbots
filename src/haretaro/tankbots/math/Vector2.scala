@@ -24,6 +24,12 @@ case class Vector2 (val x:Double, val y:Double){
    */
   def rotate(angle:Double) = Vector2.fromTheta(magnitude, this.angle + angle)
   
+  /**
+   * @param angle 角度(deg)
+   * @return angleだけ回転したベクトルを返す
+   */
+  def rotateDegrees(angle:Double) = Vector2.fromTheta(magnitude, this.angle + math.toRadians(angle))
+  
   def +(that:Vector2) = Vector2(x+that.x, y+that.y)
   def -(that:Vector2) = Vector2(x-that.x, y-that.y)
   def *(that:Int) = Vector2(x*that, y*that)

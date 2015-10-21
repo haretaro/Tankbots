@@ -34,7 +34,7 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
       case v => v.reduceLeft(_+_)/getOthers
     }
     
-    val wallVector = (center - position) * 0.00001 * math.pow((center-position).magnitude,2)
+    val wallVector = (center - position) * 0.0001 * math.pow((center-position).magnitude,2)
     val gravity = enemyVector + wallVector //中心に向かうベクトルを加算して壁にぶつからないようにする
     
     val angle = Utils.normalRelativeAngle(gravity.angle - getHeadingRadians)
@@ -80,10 +80,22 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
    */
   def goTo(x:Double,y:Double):Unit = goTo(Vector2(x,y))
   
+  /**
+   * @return 次のターンにこのロボットが移動する座標
+   */
   def nextPosition = if(getTime == timeLastUpdated){
     _nextPosition
   }else{
     println(getTime,timeLastUpdated)
     throw new Exception("nextPositionを呼び出す前にドライバーにこのターンの移動を決定させてください")
+  }
+  
+  /**
+   * @return 前のターンに申告した移動先の座標
+   */
+  def previousDestination = if(getTime == timeLastUpdated+1){
+    _nextPosition
+  }else{
+    throw new Exception("ドライバーがこのターンの移動先を決定する前に呼び出してください")
   }
 }
