@@ -13,7 +13,7 @@ package haretaro.tankbots.math
  * attemptLimits 最大試行回数
  */
 case class OptionalSecantMethod(val f:Double => Option[Double], val init1:Double, val init2:Double,
-    val epsilon:Double = 1e-6, val attemptLimits:Int = 16) {
+    val epsilon:Double = 1e-6, val attemptLimits:Int = 20) {
   
   /**
    * @return 解を返す
@@ -24,7 +24,6 @@ case class OptionalSecantMethod(val f:Double => Option[Double], val init1:Double
       f(x2) match{
         case _ if numberOfCall >= attemptLimits => None
         case Some(fx2) if math.abs(fx2) < epsilon =>{
-          if(numberOfCall > 10) println(numberOfCall)
           Option(x2)
         }
         case Some(fx2) => ans(x2, fx2, (fx1-fx2)/(x1-x2), numberOfCall+1)

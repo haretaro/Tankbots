@@ -103,6 +103,9 @@ case class Enemy(name:String){
   
   def update = history = history.takeRight(20)
   
+  /**
+   * @return このターン攻撃したと言えるかどうか
+   */
   def didShoot = {
     if(history.length > 1){
       val his = history.takeRight(2)
