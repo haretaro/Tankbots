@@ -33,6 +33,9 @@ case class Enemy(name:String){
   /** 最後に観測された時の速度 */
   def lastVelocity = history.last.velocity
   
+  /** 最後に観測された時のenergy */
+  def lastEnergy = history.last.energy
+  
   /**
    * @return 速度ベクトルの角度の変化
    */

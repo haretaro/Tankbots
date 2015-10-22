@@ -16,8 +16,6 @@ class Churchill extends AdvancedRobot with Gunner with Driver with Radarman with
   
   override def run = {
     initDriver
-    //initGunner
-    
     
     addOnPaintEventHandler(g =>{
       enemies.map(e => drawRect(g, Color.red, e.linerPrediction(getTime,0) - Vector2(16,16), 32, 32))
@@ -28,14 +26,19 @@ class Churchill extends AdvancedRobot with Gunner with Driver with Radarman with
     })
     
     
-    Painter.paintBrown(this)
+    Painter.paintGreen(this)
     if(getRoundNum == 4) Painter.paintStealth(this)
     setAdjustGunForRobotTurn(true)
     while(true){
       
       updateEnemyInfo
-      //updateGunner
-      executeFire
+      
+      getEnergy match{
+        case life if life > 20 => executeFire
+        case _ if nearestEnemy.map(e=>e.lastEnergy == 0).getOrElse(false) => executeFire
+        case _ => ()
+      }
+      
       radar
       if(getOthers==1){
         simpleAvoid
@@ -43,12 +46,18 @@ class Churchill extends AdvancedRobot with Gunner with Driver with Radarman with
         gravityDrive
       }
       
-      if(getTime % 3 == 0 ){
-        nearestEnemy.foreach(e => {
-          //println(e.circlarPredictionError(getTime))
-          circlarPrediction(e,2d,nextPosition)
-        })
-      }
+      //敵が瀕死ならば,ちょうど一発で殺せるパワーで撃つ
+      nearestEnemy.foreach(e=>{
+        e match{
+          //damage = 4 * power where power <= 1
+          case e if e.lastEnergy <= 4 => circlarPrediction(e,e.lastEnergy/4,nextPosition)
+          //damage = 4 * power + 2 * (power - 1) where power > 1
+          case e if e.lastEnergy <= 16 => circlarPrediction(e,(e.lastEnergy+2)/6,nextPosition)
+          case e if (e.lastPosition - currentPosition).magnitude < 200 => circlarPrediction(e,3,nextPosition)
+          case _ => circlarPrediction(e,2,nextPosition)
+        }
+      })
+      
       execute
     }
   }
