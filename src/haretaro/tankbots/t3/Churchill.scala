@@ -71,9 +71,11 @@ class Churchill extends AdvancedRobot with Gunner with Driver with Radarman with
   override def onWin(e:WinEvent) = {
     setBulletColor(Color.red)
     
-    getRoundNum%2 match{
-      case 0 => trackerDance
+    getRoundNum match{
       case 1 => chameleonDance
+      case 10 => salute
+      case r if r%2==0 => chameleonShake
+      case _ => trackerDance
     }
   }
 }
