@@ -35,11 +35,16 @@ class Churchill extends AdvancedRobot with Gunner with Driver with Radarman with
       
       getEnergy match{
         case life if life > 20 => executeFire
+        case life if life > 3 && getOthers > 1 => executeFire
         case _ if nearestEnemy.map(e=>e.lastEnergy == 0).getOrElse(false) => executeFire
         case _ => ()
       }
       
-      radar
+      getTime match{
+        case t if getOthers > 1 && (t/10)%4==0 || enemies.size == 0 => setTurnRadarRight(45)
+        case _ => nearestEnemy.map(_.lastPosition).orElse(Option(Vector2(0,0))).foreach(p => lookAt(p))
+      }
+      
       if(getOthers==1){
         simpleAvoid
       }else{

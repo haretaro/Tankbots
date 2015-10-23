@@ -51,4 +51,15 @@ trait Commander extends AdvancedRobot{
     case _ => Option(enemies.minBy(e=>(e.lastPosition - Vector2(getX,getY)).magnitude))
   }
   
+  /**
+   * @return 予測誤差が小さい敵
+   */
+  def candidate = {
+    if(enemies.size > 0){
+      Option(enemies.minBy(e => e.circlarPredictionError(getTime)))
+    }else{
+      None
+    }
+  }
+  
 }
