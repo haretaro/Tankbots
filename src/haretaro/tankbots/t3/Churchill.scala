@@ -29,6 +29,7 @@ class Churchill extends AdvancedRobot with Gunner with Driver with Radarman with
     Painter.paintGreen(this)
     if(getRoundNum == 4) Painter.paintStealth(this)
     setAdjustGunForRobotTurn(true)
+    
     while(true){
       
       updateEnemyInfo
@@ -66,6 +67,8 @@ class Churchill extends AdvancedRobot with Gunner with Driver with Radarman with
       execute
     }
   }
+  
+  
   
   /** 勝利のダンスを踊る */
   override def onWin(e:WinEvent) = {
