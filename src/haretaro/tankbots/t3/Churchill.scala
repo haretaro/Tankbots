@@ -20,7 +20,7 @@ class Churchill extends AdvancedRobot with Gunner with Driver with Radarman with
     addOnPaintEventHandler(g =>{
       enemies.map(e => drawRect(g, Color.red, e.linerPrediction(getTime,0) - Vector2(16,16), 32, 32))
       for(i <- 0 to 5){
-        enemies.map(e => e.circlarPrediction2(getTime,i*5).foreach(pos =>
+        enemies.map(e => e.circlarPrediction(getTime,i*5).foreach(pos =>
           drawRect(g, Color.cyan, pos - Vector2(16,16), 32, 32)))
       }
     })

@@ -83,13 +83,13 @@ trait Gunner extends AdvancedRobot with Commander with RoboUtil with GraphicalDe
     //したがってf(t) = 0 となる t で弾が当たる
     //弾は一秒後に発射されることに注意
     val f:Double => Option[Double] = t =>
-      target.circlarPrediction2(getTime,t)
+      target.circlarPrediction(getTime,t)
       .map(enemyPosition => (enemyPosition - futurePosition).magnitude - bulletSpeed(power) * (t-1))
     
     val timeOfColision = OptionalSecantMethod(f,0,1).answer
     timeOfColision match{
       case Some(t) => {
-        target.circlarPrediction2(getTime,t) match{
+        target.circlarPrediction(getTime,t) match{
           case Some(pointOfColision) => {
             if(isInField(pointOfColision)) orderFire(pointOfColision,power,futurePosition)
             pointOfCol = pointOfColision

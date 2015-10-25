@@ -48,22 +48,7 @@ case class Enemy(name:String){
    * 速度の大きさと向きの変化が一定の時のt時間後の位置
    * 計算できるだけの情報がない場合はNoneが返る
    */
-  def circlarPrediction(now:Long, t:Int) = {
-    history match{
-      case his if his.length < 2 => None
-      case _ =>{
-        var position = history.last.position
-        var velocity = history.last.velocity
-        for (i <- 0 to t + (now - timeLastUpdated).asInstanceOf[Int]){
-          position += velocity
-          velocity = velocity.rotate(deltaRotation)
-        }
-        Option(position)
-      }
-    }
-  }
-  
-  def circlarPrediction2(time:Long, t:Int) = {
+  def circlarPrediction(time:Long, t:Int) = {
     def next(position:Vector2, velocity:Vector2, delta:Double, t:Int):Vector2 = {
       if(t<=0){
         position
@@ -98,7 +83,7 @@ case class Enemy(name:String){
   }
   
   def circlarPredictionError(now:Long) = {
-    circlarPrediction2(now-10,10).map(p => (history.last.position - p).magnitude)
+    circlarPrediction(now-10,10).map(p => (history.last.position - p).magnitude)
   }
   
   def update = history = history.takeRight(20)
