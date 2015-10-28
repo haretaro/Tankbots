@@ -9,8 +9,6 @@ object State {
   case object Aiming extends State(1)
   
   val values = Array(Searching, Aiming)
-  
-  
 }
 
 sealed abstract class State(val n:Int)
