@@ -30,32 +30,20 @@ class Churchill_Mk3 extends AdvancedRobot with Gunner with Driver with Radarman 
     if(getRoundNum == 4) Painter.paintStealth(this)
     setAdjustGunForRobotTurn(true)
     
-    //ループ関数
-    //再帰呼び出しでループする.ステートを見て処理を分岐し、次のステートを決定して次のループに渡す
-    def loop(state:State, numberOfCalls:Int){
-      
-      val (nextState,nextCall) = state match{
-        case State.Searching => search(numberOfCalls)
-        case State.Aiming => aim(numberOfCalls)
-      }
-      
+    def loop(state:State):Unit = {
+      val nextState = state.execute
       execute
-      loop(nextState,nextCall)
+      loop(nextState)
     }
-    loop(State.Searching,0)
     
-    def search(numberOfCalls:Int):(State,Int) = {
-      if(numberOfCalls < 5){
-        turnRadarRight(45)
-        (State.Searching, numberOfCalls+1)
-      }else{
-        (State.Aiming, 0)
-      }
+    abstract class State{
+      def execute:State
     }
-  
-    def aim(numberOfCalls:Int):(State,Int) = {
-      
-      (State.Aiming, numberOfCalls+1)
+    
+    class Aiming extends State{
+      override def execute:State = {
+        this
+      }
     }
   }
   
