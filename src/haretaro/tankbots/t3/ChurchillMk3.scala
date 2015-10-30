@@ -33,7 +33,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     loop(SearchingState())
     
     def loop(state:State):Unit = {
-      gravityDrive
+      if(getOthers > 1) gravityDrive else simpleAvoid
       executeFire
       val nextState = state.execute
       execute
@@ -46,6 +46,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     
     //周りを見る状態
     case class SearchingState() extends State{
+      println("searching")
       var foundEnemies = Set[Enemy]()
       val handler:OnFoundEnemyEvent=>Unit = e => {
         foundEnemies = foundEnemies + e.enemy
@@ -57,6 +58,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
           println("size=" + foundEnemies.size)
           this
         }else{
+          enemies = foundEnemies
           removeOnFoundEnemyEventHandler(handler)
           nearestEnemy.map(e=>AimingState(e)).getOrElse(SearchingState())
         }
@@ -65,6 +67,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     
     //敵を狙う状態
     case class AimingState(target:Enemy) extends State{
+      println("aiming")
       var counter = 0
       
       override def execute:State = {
