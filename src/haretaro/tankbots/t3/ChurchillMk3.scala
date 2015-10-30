@@ -30,7 +30,11 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     if(getRoundNum == 4) Painter.paintStealth(this)
     setAdjustGunForRobotTurn(true)
     
+    loop(SearchingState())
+    
     def loop(state:State):Unit = {
+      gravityDrive
+      executeFire
       val nextState = state.execute
       execute
       loop(nextState)
@@ -40,18 +44,37 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       def execute:State
     }
     
+    //周りを見る状態
     case class SearchingState() extends State{
+      var foundEnemies = Set[Enemy]()
+      val handler:OnFoundEnemyEvent=>Unit = e => {
+        foundEnemies = foundEnemies + e.enemy
+      }
+      addOnFoundEnemyEventHandler(handler)
       def execute = {
-        nearestEnemy.map(e=>AimingState(e)).getOrElse(SearchingState())
+        if(foundEnemies.size < getOthers){
+          setTurnRadarRight(100)
+          println("size=" + foundEnemies.size)
+          this
+        }else{
+          removeOnFoundEnemyEventHandler(handler)
+          nearestEnemy.map(e=>AimingState(e)).getOrElse(SearchingState())
+        }
       }
     }
     
+    //敵を狙う状態
     case class AimingState(target:Enemy) extends State{
       var counter = 0
       
       override def execute:State = {
         lookAt(target.lastPosition)
         if(counter < 3){
+          counter+=1
+          this
+        }else if(counter < 8){
+          circlarPrediction(target,3)
+          counter+=1
           this
         }else{
           circlarPrediction(target,3)

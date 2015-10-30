@@ -1,6 +1,6 @@
 package haretaro.tankbots.crew
 
-import haretaro.tankbots.commons.Enemy
+import haretaro.tankbots.commons._
 import haretaro.tankbots.math.Vector2
 import robocode._
 
@@ -11,6 +11,9 @@ import robocode._
 trait Commander extends AdvancedRobot{
   
   protected var enemies = Set[Enemy]()
+  
+  //TODO:?? private にするとこのセットを使っていない戦車がabstract method errorを出す.なんで？
+  var onFoundEnemyEventHandlers:Set[OnFoundEnemyEvent=>Unit] = Set.empty
 
   /**
    * レーダーがスキャンしたロボットをリストに追加する
@@ -33,7 +36,16 @@ trait Commander extends AdvancedRobot{
       }
     }
     enemy.push(e.getTime, position, velocity, e.getEnergy)
+    
+    val event = OnFoundEnemyEvent(enemy,e.getTime)
+    onFoundEnemyEventHandlers.foreach(handler => handler(event))
   }
+  
+  def addOnFoundEnemyEventHandler(handler:OnFoundEnemyEvent=>Unit) =
+    onFoundEnemyEventHandlers = onFoundEnemyEventHandlers + handler
+  
+  def removeOnFoundEnemyEventHandler(handler:OnFoundEnemyEvent=>Unit) = 
+    onFoundEnemyEventHandlers = onFoundEnemyEventHandlers - handler
   
   /**
    * 数ターン以上レーダーが捉えてない敵をリストから消去する
