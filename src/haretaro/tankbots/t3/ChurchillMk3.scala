@@ -12,7 +12,7 @@ import robocode._
  * @author Haretaro
  * 1 on 1 時に攻撃を避けるチャーチル戦車
  */
-class Churchill_Mk3 extends AdvancedRobot with Gunner with Driver with Radarman with RoboUtil with Dancer with GraphicalDebugger{
+class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman with RoboUtil with Dancer with GraphicalDebugger{
   
   override def run = {
     initDriver
@@ -40,9 +40,23 @@ class Churchill_Mk3 extends AdvancedRobot with Gunner with Driver with Radarman 
       def execute:State
     }
     
-    class Aiming extends State{
+    case class SearchingState() extends State{
+      def execute = {
+        nearestEnemy.map(e=>AimingState(e)).getOrElse(SearchingState())
+      }
+    }
+    
+    case class AimingState(target:Enemy) extends State{
+      var counter = 0
+      
       override def execute:State = {
-        this
+        lookAt(target.lastPosition)
+        if(counter < 3){
+          this
+        }else{
+          circlarPrediction(target,3)
+          SearchingState()
+        }
       }
     }
   }
