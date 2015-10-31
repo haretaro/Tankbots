@@ -46,43 +46,59 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     
     //周りを見る状態
     case class SearchingState() extends State{
-      println("searching")
       var foundEnemies = Set[Enemy]()
       val handler:OnFoundEnemyEvent=>Unit = e => {
         foundEnemies = foundEnemies + e.enemy
       }
       addOnFoundEnemyEventHandler(handler)
       def execute = {
-        if(foundEnemies.size < getOthers){
-          setTurnRadarRight(100)
-          println("size=" + foundEnemies.size)
-          this
-        }else{
-          enemies = foundEnemies
-          removeOnFoundEnemyEventHandler(handler)
-          nearestEnemy.map(e=>AimingState(e)).getOrElse(SearchingState())
+        foundEnemies.size match{
+          case size if size < getOthers => {
+            setTurnRadarRight(100)
+            this
+          }
+          case _ if getOthers < 1 => {
+            enemies = foundEnemies
+            removeOnFoundEnemyEventHandler(handler)
+            nearestEnemy.map(e=>OneOnOne(e)).getOrElse(SearchingState())
+          }
+          case _ => {
+            enemies = foundEnemies
+            removeOnFoundEnemyEventHandler(handler)
+            nearestEnemy.map(e=>AimingState(e)).getOrElse(SearchingState())
+          }
         }
       }
     }
     
     //敵を狙う状態
     case class AimingState(target:Enemy) extends State{
-      println("aiming")
       var counter = 0
       
       override def execute:State = {
         lookAt(target.lastPosition)
-        if(counter < 3){
-          counter+=1
-          this
-        }else if(counter < 8){
-          circlarPrediction(target,3)
-          counter+=1
-          this
-        }else{
-          circlarPrediction(target,3)
-          SearchingState()
+        val nextState = counter match{
+          case c if c < 3 => this
+          case c if c < 8 => {
+            circlarPrediction(target,3)
+            this
+          }
+          case _ => {
+            circlarPrediction(target,3)
+            SearchingState()
+          }
         }
+        counter += 1
+        nextState
+      }
+    }
+    
+    //1 on 1 になった状態
+    case class OneOnOne(target:Enemy) extends State{
+      override def execute:State = {
+        lookAt(target.lastPosition)
+        circlarPrediction(target,3)
+        this
       }
     }
   }
