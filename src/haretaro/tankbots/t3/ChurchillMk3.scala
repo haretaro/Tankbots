@@ -33,7 +33,6 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     loop(SearchingState())
     
     def loop(state:State):Unit = {
-      if(getOthers > 1) gravityDrive else simpleAvoid
       executeFire
       val nextState = state.execute
       execute
@@ -52,12 +51,13 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       }
       addOnFoundEnemyEventHandler(handler)
       def execute = {
+        gravityDrive
         foundEnemies.size match{
           case size if size < getOthers => {
             setTurnRadarRight(100)
             this
           }
-          case _ if getOthers < 1 => {
+          case _ if getOthers < 2 => {
             enemies = foundEnemies
             removeOnFoundEnemyEventHandler(handler)
             nearestEnemy.map(e=>OneOnOne(e)).getOrElse(SearchingState())
@@ -76,6 +76,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       var counter = 0
       
       override def execute:State = {
+        gravityDrive
         lookAt(target.lastPosition)
         val nextState = counter match{
           case c if c < 3 => this
@@ -96,6 +97,8 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     //1 on 1 になった状態
     case class OneOnOne(target:Enemy) extends State{
       override def execute:State = {
+        //TODO:敵の探索コードを書く
+        simpleAvoid
         lookAt(target.lastPosition)
         circlarPrediction(target,3)
         this
