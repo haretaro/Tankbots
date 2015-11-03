@@ -8,6 +8,8 @@ import haretaro.tankbots.math.Vector2
 case class Enemy(name:String){
   
   private var history = Seq[EnemyInfo]()
+  private var _error = 0d
+  private var numberOfErrorUpdate = 0
   
   /**
    * @return 速度ベクトルが一定の場合の現在時刻からt時間後の未来位置.t=0で現在位置
@@ -21,8 +23,16 @@ case class Enemy(name:String){
   /**
    * 情報をリストに追加する
    */
-  def push(time:Long, position:Vector2, velocity:Vector2, energy:Double) =
+  def push(time:Long, position:Vector2, velocity:Vector2, energy:Double) ={
     history = history :+ EnemyInfo(time, position, velocity, energy)
+    circlarPrediction(time-1,1) match{
+      case Some(prediction) =>{
+        numberOfErrorUpdate += 1
+        _error = (_error + (prediction - position).magnitude)/numberOfErrorUpdate
+      }
+      case _ => ()
+    }
+  }
   
   /** 最後に観測された時刻 */
   def timeLastUpdated = history.last.time
@@ -100,4 +110,6 @@ case class Enemy(name:String){
       false
     }
   }
+  
+  def circlarError = _error
 }

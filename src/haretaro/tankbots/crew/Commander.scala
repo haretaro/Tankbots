@@ -66,12 +66,9 @@ trait Commander extends AdvancedRobot{
   /**
    * @return 予測誤差が小さい敵
    */
-  def candidate = {
-    if(enemies.size > 0){
-      Option(enemies.minBy(e => e.circlarPredictionError(getTime)))
-    }else{
-      None
-    }
+  def candidate = enemies match{
+    case e if e.isEmpty => None
+    case _ => Option(enemies.minBy(e => e.circlarError))
   }
   
 }

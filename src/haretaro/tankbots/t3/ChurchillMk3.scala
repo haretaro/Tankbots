@@ -15,10 +15,9 @@ import robocode._
 class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman with RoboUtil with Dancer with GraphicalDebugger{
   
   override def run = {
-    initDriver
     
     addOnPaintEventHandler(g =>{
-      enemies.map(e => drawRect(g, Color.red, e.linerPrediction(getTime,0) - Vector2(16,16), 32, 32))
+      candidate.foreach(e => drawRect(g, Color.red, e.lastPosition - Vector2(16,16), 32, 32))
       for(i <- 0 to 5){
         enemies.map(e => e.circlarPrediction(getTime,i*5).foreach(pos =>
           drawRect(g, Color.cyan, pos - Vector2(16,16), 32, 32)))
@@ -32,6 +31,8 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     loop(SearchingState())
     
     def loop(state:State):Unit = {
+      enemies.foreach(e => println(e.name,e.circlarError))
+      println()
       val nextState = state.execute
       execute
       loop(nextState)
@@ -51,6 +52,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       addOnFoundEnemyEventHandler(handler)
       
       def execute = {
+        candidate.foreach( e => circlarPrediction(e,2))
         gravityDrive
         val nextState = foundEnemies.size match{
           //索敵中に敵の数が変わったら索敵を最初からやり直す
@@ -74,7 +76,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
           case _ => {
             enemies = foundEnemies
             removeOnFoundEnemyEventHandler(handler)
-            nearestEnemy.map(e=>AimingState(e)).getOrElse(SearchingState())
+            candidate.map(e=>AimingState(e)).getOrElse(SearchingState())
           }
         }
         counter += 1
@@ -90,7 +92,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
         executeFire
         gravityDrive
         lookAt(target.lastPosition)
-        circlarPrediction(target,2)
+        circlarPrediction(target,3)
         val nextState = getGunHeat match{
           case heat if heat > 1 => SearchingState()
           case _ if counter > 6 => SearchingState()
