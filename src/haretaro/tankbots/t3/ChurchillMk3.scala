@@ -32,7 +32,6 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     loop(SearchingState())
     
     def loop(state:State):Unit = {
-      println(getGunHeat)
       executeFire
       val nextState = state.execute
       execute
@@ -106,12 +105,9 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     case class OneOnOne(target:Enemy) extends State{
       
       override def execute:State = {
-        if(enemies.size == 0)
-          setTurnRadarRight(100)
-        else 
-          lookAt(target.lastPosition)
+        lookAt(target.lastPosition)
         simpleAvoid
-        if(getEnergy > 20) circlarPrediction(target,2)
+        if(getEnergy > 3) circlarPrediction(target,2)
         this
       }
     }
