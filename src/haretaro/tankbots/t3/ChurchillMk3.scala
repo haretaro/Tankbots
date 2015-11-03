@@ -46,16 +46,24 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     //索敵状態
     case class SearchingState() extends State{
       var foundEnemies = Set[Enemy]()
+      var counter = 0
       val numberOfEnemies = getOthers
       val handler:OnFoundEnemyEvent=>Unit = e => foundEnemies = foundEnemies + e.enemy
+      
       addOnFoundEnemyEventHandler(handler)
+      
       def execute = {
         gravityDrive
-        foundEnemies.size match{
+        nearestEnemy.foreach(e => circlarPrediction(e,2))
+        val nextState = foundEnemies.size match{
           //索敵中に敵の数が変わったら索敵を最初からやり直す
-          case _ if getOthers < numberOfEnemies => {
+          case _ if getOthers != numberOfEnemies => {
             removeOnFoundEnemyEventHandler(handler)
             SearchingState()
+          }
+          case size if size < getOthers && counter < 2 => {
+            setTurnRadarLeft(100)
+            this
           }
           case size if size < getOthers => {
             setTurnRadarRight(100)
@@ -72,6 +80,8 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
             nearestEnemy.map(e=>AimingState(e)).getOrElse(SearchingState())
           }
         }
+        counter += 1
+        nextState
       }
     }
     
@@ -81,16 +91,10 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       
       override def execute:State ={
         lookAt(target.lastPosition)
+        circlarPrediction(target,2)
         val nextState = counter match{
-          case c if c < 3 => this
-          case c if c < 8 => {
-            circlarPrediction(target,3)
-            this
-          }
-          case _ => {
-            circlarPrediction(target,3)
-            SearchingState()
-          }
+          case c if c < 6 => this
+          case _ => SearchingState()
         }
         counter += 1
         nextState
@@ -106,7 +110,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
         else 
           lookAt(target.lastPosition)
         simpleAvoid
-        circlarPrediction(target,3)
+        if(getEnergy > 20) circlarPrediction(target,2)
         this
       }
     }
