@@ -89,6 +89,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       var counter = 0
       
       override def execute:State ={
+        gravityDrive
         lookAt(target.lastPosition)
         circlarPrediction(target,2)
         val nextState = getGunHeat match{
