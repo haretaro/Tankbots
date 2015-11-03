@@ -25,7 +25,6 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       }
     })
     
-    
     Painter.paintGreen(this)
     if(getRoundNum == 4) Painter.paintStealth(this)
     setAdjustGunForRobotTurn(true)
@@ -33,6 +32,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     loop(SearchingState())
     
     def loop(state:State):Unit = {
+      println(getGunHeat)
       executeFire
       val nextState = state.execute
       execute
@@ -54,7 +54,6 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       
       def execute = {
         gravityDrive
-        nearestEnemy.foreach(e => circlarPrediction(e,2))
         val nextState = foundEnemies.size match{
           //索敵中に敵の数が変わったら索敵を最初からやり直す
           case _ if getOthers != numberOfEnemies => {
@@ -92,9 +91,10 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       override def execute:State ={
         lookAt(target.lastPosition)
         circlarPrediction(target,2)
-        val nextState = counter match{
-          case c if c < 6 => this
-          case _ => SearchingState()
+        val nextState = getGunHeat match{
+          case heat if heat > 1 => SearchingState()
+          case _ if counter > 6 => SearchingState()
+          case _ => this
         }
         counter += 1
         nextState
