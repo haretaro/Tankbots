@@ -71,7 +71,7 @@ case class Enemy(name:String){
   /**
    * 連続して情報を取得しているターン数
    */
-  def stroak = {
+  def streak = {
     def calc(list:Seq[EnemyInfo]):Int = {
       val enemy :: tail = list
       tail match{

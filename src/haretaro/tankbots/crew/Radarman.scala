@@ -1,5 +1,6 @@
 package haretaro.tankbots.crew
 
+import haretaro.tankbots.commons.RoboUtil
 import haretaro.tankbots.math.Vector2
 import robocode._
 import robocode.util.Utils
@@ -8,17 +9,15 @@ import robocode.util.Utils
  * @author Haretaro
  * レーダー手
  */
-trait Radarman extends AdvancedRobot with Commander{
+trait Radarman extends AdvancedRobot with Commander with RoboUtil{
   
   /** 指定した場所の辺りを見る */
   def lookAt(point:Vector2) = {
-    val direction = point - Vector2(getX,getY)
+    val direction = point - currentPosition
     val angle = Utils.normalRelativeAngleDegrees(direction.angleDegrees - getRadarHeading)
-    val ang:Double = angle match {
-      case a if a<0 => a - 10
-      case a if a>0 => a + 10
-      case a if(a==0 && getTime%2==0) => a + 10
-      case a => a - 10
+    val ang:Double = angle match{
+      case a if a<0 => a - 22.5
+      case a if a>=0 => a + 22.5
     }
     setTurnRadarRight(ang)
   }

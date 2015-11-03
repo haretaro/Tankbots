@@ -32,6 +32,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     loop(SearchingState())
     
     def loop(state:State):Unit = {
+      nearestEnemy.foreach(e=>println(e.streak))
       executeFire
       val nextState = state.execute
       execute
