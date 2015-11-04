@@ -53,7 +53,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       def execute = {
         candidate.foreach( e => circlarPrediction(e,2))
         gravityDrive
-        val nextState = foundEnemies.size match{
+        foundEnemies.size match{
           //索敵中に敵の数が変わったら索敵を最初からやり直す
           case _ if getOthers != numberOfEnemies => {
             removeOnFoundEnemyEventHandler(handler)
@@ -74,8 +74,6 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
             candidate.map(e=>AimingState(e)).getOrElse(SearchingState())
           }
         }
-        counter += 1
-        nextState
       }
     }
     
