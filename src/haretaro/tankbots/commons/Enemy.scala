@@ -26,7 +26,7 @@ case class Enemy(name:String){
   def push(time:Long, position:Vector2, velocity:Vector2, energy:Double) ={
     history = history :+ EnemyInfo(time, position, velocity, energy)
     circlarPrediction(time-1,1) match{
-      case Some(prediction) =>{
+      case Some(prediction) if((prediction - position).magnitude != 0) =>{
         numberOfErrorUpdate += 1
         _error = (_error + (prediction - position).magnitude)/numberOfErrorUpdate
       }
@@ -90,10 +90,6 @@ case class Enemy(name:String){
       }
     }
     calc(history.reverse)
-  }
-  
-  def circlarPredictionError(now:Long) = {
-    circlarPrediction(now-10,10).map(p => (history.last.position - p).magnitude)
   }
   
   def update = history = history.takeRight(20)
