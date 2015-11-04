@@ -68,10 +68,14 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
             removeOnFoundEnemyEventHandler(handler)
             nearestEnemy.map(e=>OneOnOne(e)).getOrElse(SearchingState())
           }
-          case _ => {
+          case _ if getGunHeat < 0.4 => {
             enemies = foundEnemies
             removeOnFoundEnemyEventHandler(handler)
             candidate.map(e=>AimingState(e)).getOrElse(SearchingState())
+          }
+          case _ => {
+            candidate.foreach(e=>lookAt(e.lastPosition))
+            this
           }
         }
       }
@@ -100,10 +104,14 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     case class OneOnOne(target:Enemy) extends State{
       
       override def execute:State = {
-        if(getEnergy > 3) executeFire
+        executeFire
         lookAt(target.lastPosition)
         simpleAvoid
-        circlarPrediction(target,2)
+        if(getEnergy > 10) circlarPrediction(target,2)
+        else if(getEnergy > 0.1){
+          targetAt(target.lastPosition)
+          setFire(0.1)
+        }
         this
       }
     }
