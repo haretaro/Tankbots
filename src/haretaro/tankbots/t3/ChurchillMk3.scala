@@ -45,7 +45,6 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     //索敵状態
     case class SearchingState() extends State{
       var foundEnemies = Set[Enemy]()
-      var counter = 0
       val numberOfEnemies = getOthers
       val handler:OnFoundEnemyEvent=>Unit = e => foundEnemies = foundEnemies + e.enemy
       
@@ -59,10 +58,6 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
           case _ if getOthers != numberOfEnemies => {
             removeOnFoundEnemyEventHandler(handler)
             SearchingState()
-          }
-          case size if size < getOthers && counter < 2 => {
-            setTurnRadarLeft(100)
-            this
           }
           case size if size < getOthers => {
             setTurnRadarRight(100)
