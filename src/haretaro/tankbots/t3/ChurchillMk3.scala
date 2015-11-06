@@ -50,7 +50,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
       
       addOnFoundEnemyEventHandler(handler)
       
-      def execute = {
+      override def execute = {
         candidate.foreach( e => circlarPrediction(e,2))
         gravityDrive
         foundEnemies.size match{
