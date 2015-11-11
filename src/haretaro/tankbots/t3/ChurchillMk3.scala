@@ -31,8 +31,6 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
     loop(SearchingState())
     
     def loop(state:State):Unit = {
-      enemies.foreach(e => println(e.name,e.circlarError))
-      println()
       val nextState = state.execute
       execute
       loop(nextState)
@@ -107,7 +105,7 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
         executeFire
         lookAt(target.lastPosition)
         simpleAvoid
-        if(getEnergy > 10) circlarPrediction(target,2)
+        if(getEnergy > 10 && target.circlarError < 0.001) circlarPrediction(target,2)
         else if(getEnergy > 0.1){
           targetAt(target.lastPosition)
           setFire(0.1)

@@ -70,15 +70,17 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
   def simpleAvoid = {
     nearestEnemy.foreach(e=>{
       val relative = e.lastPosition - currentPosition
+
       val direction = relative.magnitude match{
-        case d if d > 300 => {
-          relative.rotateDegrees(45).normalized
-        }
-        case d if d < 100 => {
-          relative.rotateDegrees(75)
+        case d if d > 200 => {
+          if(relative.rotateDegrees(90) * centralVector > relative.rotateDegrees(-90) * centralVector)
+            relative.rotateDegrees(60).normalized
+          else
+            relative.rotateDegrees(120).normalized
         }
         case _ => relative.rotateDegrees(90).normalized
       }
+      
       setTurnRightRadians(Utils.normalRelativeAngle(direction.angle - getHeadingRadians))
       if(e.didShoot){
         setMaxVelocity(8)
