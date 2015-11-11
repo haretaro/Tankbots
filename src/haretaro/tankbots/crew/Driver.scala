@@ -40,13 +40,15 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
     val angle = Utils.normalRelativeAngle(gravity.angle - getHeadingRadians)
     
     val speed = angle match{
-      case a if a < -math.Pi/2 || math.Pi/2 < a => 4 + Utils.getRandom.nextInt(5)
+      case a if a < -math.Pi/2 || math.Pi/2 < a => -8
       case _ => 8
     }
     
     setTurnRightRadians(angle)
-    setMaxVelocity(speed)
-    setAhead(100)
+    setMaxVelocity(math.abs(speed))
+    setAhead(speed*10)
+    
+    //TODO:後退にも対応させる
     val nextSpeed = getVelocity match{
       case v if speed > v && v + 1 <= speed => v + 1
       case v if v + 1 > speed => speed
