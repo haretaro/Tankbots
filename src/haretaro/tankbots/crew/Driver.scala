@@ -35,7 +35,7 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
     }
     
     val wallVector = (center - position) * 0.0001 * math.pow((center-position).magnitude,2)
-    val gravity = enemyVector + wallVector //中心に向かうベクトルを加算して壁にぶつからないようにする
+    val gravity = enemyVector + wallVector.rotateDegrees((getTime/20)%3 * 30 - 30) //中心に向かうベクトルを加算して壁にぶつからないようにする
     
     val angle = Utils.normalRelativeAngle(gravity.angle - getHeadingRadians)
     
@@ -44,7 +44,7 @@ trait Driver extends AdvancedRobot with Commander with GraphicalDebugger with Ro
       case _ => 8
     }
     
-    setTurnRightRadians(angle)
+    if(speed>0) setTurnRightRadians(angle) else setTurnLeftRadians(angle)
     setMaxVelocity(math.abs(speed))
     setAhead(speed*10)
     
