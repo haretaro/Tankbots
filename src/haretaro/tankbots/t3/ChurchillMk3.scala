@@ -105,10 +105,10 @@ class ChurchillMk3 extends AdvancedRobot with Gunner with Driver with Radarman w
         executeFire
         lookAt(target.lastPosition)
         simpleAvoid
-        if(getEnergy > 10 && target.circlarError < 0.001) circlarPrediction(target,2)
+        if(getEnergy > 10 && target.circlarError < 0.005) circlarPrediction(target,2)
         else if(getEnergy > 0.1){
           targetAt(target.lastPosition)
-          setFire(0.1)
+          setFire(3.1/4) //当たっても回避が発動しないダメージ量
         }
         this
       }
